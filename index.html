@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.genspark.ai/api/page_private?id=stkeqpmt -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>HAWKVIEW - Revolutionary AI Shopping Assistant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            min-height: 100vh;
+            color: #F0C55F;
+            overflow-x: hidden;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #F0C55F;
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: float 25s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.25;
+            }
+            90% {
+                opacity: 0.25;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 20px auto;
+        }
+        
+        .video-border {
+            background: linear-gradient(45deg, #F0C55F, #d4af37, #F0C55F);
+            padding: 4px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 40px rgba(240, 197, 95, 0.4),
+                0 0 80px rgba(240, 197, 95, 0.2);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 
+                    0 0 40px rgba(240, 197, 95, 0.4),
+                    0 0 80px rgba(240, 197, 95, 0.2);
+            }
+            to {
+                box-shadow: 
+                    0 0 60px rgba(240, 197, 95, 0.6),
+                    0 0 120px rgba(240, 197, 95, 0.3);
+            }
+        }
+        
+        .video-content {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-content video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #F0C55F, #d4af37);
+            color: #000;
+            font-size: 2rem;
+            font-weight: 900;
+            text-align: center;
+            border-radius: 16px;
+        }
+        
+        .title-section {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .title-shimmer {
+            background: linear-gradient(45deg, #F0C55F, #fff, #F0C55F, #d4af37);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .subtitle {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #F0C55F;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+        
+        .features-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(240, 197, 95, 0.08));
+            border: 2px solid rgba(240, 197, 95, 0.6);
+            backdrop-filter: blur(15px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.75), rgba(240, 197, 95, 0.15));
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(240, 197, 95, 0.4);
+            border-color: rgba(240, 197, 95, 0.8);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #F0C55F;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-description {
+            font-size: 0.9rem;
+            color: rgba(240, 197, 95, 0.85);
+            line-height: 1.5;
+        }
+        
+        .spacer {
+            height: 2rem;
+        }
+        
+        .install-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto;
+            clear: both;
+        }
+        
+        .install-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #F0C55F, #FFD700);
+            color: #000;
+            border: none;
+            border-radius: 2rem;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 44px;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(240, 197, 95, 0.4);
+        }
+        
+        .install-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .install-status {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1rem;
+            right: 1rem;
+            background: rgba(34, 197, 94, 0.2);
+            border: 2px solid rgba(34, 197, 94, 0.5);
+            border-radius: 1rem;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            color: #22c55e;
+            font-weight: 700;
+            display: none;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 8px;
+            }
+            
+            .video-container {
+                max-width: 98vw;
+                margin: 15px auto;
+            }
+            
+            .features-container {
+                max-width: 95vw;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .feature-card {
+                padding: 1rem;
+            }
+            
+            .feature-title {
+                font-size: 1rem;
+            }
+            
+            .feature-description {
+                font-size: 0.8rem;
+            }
+            
+            .install-container {
+                max-width: 95vw;
+            }
+        }
+    </style>
+<style>
+    .genspark-notice-dialog {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .genspark-notice-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      box-sizing: border-box;
+      padding: 10px 30px 30px 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
+
+    .genspark-notice-title {
+      color: #000;
+      font-family: Arial;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+    }
+
+    .genspark-notice-list {
+      margin: 24px 0;
+      
+      color: #606366;
+      font-family: Arial;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      padding-left: 12px;
+    }
+
+    .genspark-notice-list li {
+      margin-bottom: 12px;
+      list-style-type: disc;
+    }
+
+    .genspark-notice-list li a {
+      color: #606366;
+      text-decoration: underline;
+    }
+
+    .genspark-notice-checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      gap: 10px;
+
+      color: #232425;
+
+      font-family: Arial;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .genspark-notice-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+      
+    .genspark-notice-ok {
+      color: #232425;
+
+      text-align: center;
+      font-family: Arial;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+
+      cursor: pointer;
+      display: flex;
+      height: 40px;
+      padding: 6px 14px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      align-self: stretch;
+      border-radius: 8px;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  </style></head>
+<body>
+    <div class="particles" id="particles"><div class="particle" style="width: 4.45774px; height: 4.45774px; left: 1003.43px; animation-duration: 22.7189s; animation-delay: 2.93705s;"></div><div class="particle" style="width: 3.29967px; height: 3.29967px; left: 3203.55px; animation-duration: 24.3647s; animation-delay: 10.8141s;"></div><div class="particle" style="width: 2.04095px; height: 2.04095px; left: 2510.46px; animation-duration: 33.8792s; animation-delay: 18.1859s;"></div><div class="particle" style="width: 2.65873px; height: 2.65873px; left: 527.38px; animation-duration: 20.8665s; animation-delay: 17.8328s;"></div><div class="particle" style="width: 4.47813px; height: 4.47813px; left: 3234.74px; animation-duration: 22.0942s; animation-delay: 0.245538s;"></div><div class="particle" style="width: 2.19252px; height: 2.19252px; left: 432.21px; animation-duration: 33.6812s; animation-delay: 16.4704s;"></div><div class="particle" style="width: 5.61259px; height: 5.61259px; left: 3350.93px; animation-duration: 30.6869s; animation-delay: 23.152s;"></div><div class="particle" style="width: 2.11003px; height: 2.11003px; left: 2654.95px; animation-duration: 27.336s; animation-delay: 17.0661s;"></div><div class="particle" style="width: 5.65778px; height: 5.65778px; left: 1009.03px; animation-duration: 26.6325s; animation-delay: 16.2271s;"></div><div class="particle" style="width: 4.52219px; height: 4.52219px; left: 419.762px; animation-duration: 22.8344s; animation-delay: 13.3291s;"></div><div class="particle" style="width: 4.92604px; height: 4.92604px; left: 1342.22px; animation-duration: 22.104s; animation-delay: 17.5259s;"></div><div class="particle" style="width: 1.02606px; height: 1.02606px; left: 952.6px; animation-duration: 26.6457s; animation-delay: 23.3813s;"></div><div class="particle" style="width: 4.70457px; height: 4.70457px; left: 1213.15px; animation-duration: 33.067s; animation-delay: 24.8329s;"></div><div class="particle" style="width: 4.78661px; height: 4.78661px; left: 2555.25px; animation-duration: 30.2587s; animation-delay: 8.80518s;"></div><div class="particle" style="width: 5.87774px; height: 5.87774px; left: 2095.4px; animation-duration: 33.8765s; animation-delay: 19.486s;"></div><div class="particle" style="width: 1.58136px; height: 1.58136px; left: 123.317px; animation-duration: 20.2529s; animation-delay: 2.30598s;"></div><div class="particle" style="width: 2.70162px; height: 2.70162px; left: 1995.47px; animation-duration: 32.8631s; animation-delay: 8.77301s;"></div><div class="particle" style="width: 5.73715px; height: 5.73715px; left: 570.779px; animation-duration: 23.1643s; animation-delay: 5.36803s;"></div><div class="particle" style="width: 5.46017px; height: 5.46017px; left: 1375.1px; animation-duration: 24.6327s; animation-delay: 8.13639s;"></div><div class="particle" style="width: 4.56052px; height: 4.56052px; left: 3132.23px; animation-duration: 21.81s; animation-delay: 16.2217s;"></div><div class="particle" style="width: 5.85265px; height: 5.85265px; left: 2302.33px; animation-duration: 20.0535s; animation-delay: 14.0827s;"></div><div class="particle" style="width: 2.64562px; height: 2.64562px; left: 2448.05px; animation-duration: 32.5362s; animation-delay: 5.96061s;"></div><div class="particle" style="width: 1.48387px; height: 1.48387px; left: 351.791px; animation-duration: 34.4412s; animation-delay: 4.72277s;"></div><div class="particle" style="width: 4.29158px; height: 4.29158px; left: 2306.42px; animation-duration: 23.0322s; animation-delay: 23.1747s;"></div><div class="particle" style="width: 3.48999px; height: 3.48999px; left: 3286.8px; animation-duration: 31.2892s; animation-delay: 6.26553s;"></div><div class="particle" style="width: 1.34011px; height: 1.34011px; left: 1248.17px; animation-duration: 29.346s; animation-delay: 21.976s;"></div><div class="particle" style="width: 4.9877px; height: 4.9877px; left: 2810.66px; animation-duration: 24.3493s; animation-delay: 1.74559s;"></div><div class="particle" style="width: 1.82125px; height: 1.82125px; left: 1724.35px; animation-duration: 26.0295s; animation-delay: 24.6734s;"></div><div class="particle" style="width: 1.88559px; height: 1.88559px; left: 1236.2px; animation-duration: 25.157s; animation-delay: 14.545s;"></div><div class="particle" style="width: 3.03138px; height: 3.03138px; left: 3330.84px; animation-duration: 32.2681s; animation-delay: 24.1241s;"></div><div class="particle" style="width: 2.41695px; height: 2.41695px; left: 2579.33px; animation-duration: 20.1169s; animation-delay: 10.34s;"></div><div class="particle" style="width: 3.05784px; height: 3.05784px; left: 2936.87px; animation-duration: 22.8136s; animation-delay: 0.0926701s;"></div><div class="particle" style="width: 1.34124px; height: 1.34124px; left: 1932.69px; animation-duration: 24.8486s; animation-delay: 15.5807s;"></div><div class="particle" style="width: 2.17825px; height: 2.17825px; left: 2106.65px; animation-duration: 29.7184s; animation-delay: 22.989s;"></div><div class="particle" style="width: 2.97982px; height: 2.97982px; left: 2022.77px; animation-duration: 30.4118s; animation-delay: 9.22149s;"></div><div class="particle" style="width: 5.79922px; height: 5.79922px; left: 2997.94px; animation-duration: 30.1251s; animation-delay: 19.8277s;"></div><div class="particle" style="width: 4.75371px; height: 4.75371px; left: 856.089px; animation-duration: 30.8922s; animation-delay: 21.3668s;"></div><div class="particle" style="width: 4.87828px; height: 4.87828px; left: 2285.77px; animation-duration: 23.9574s; animation-delay: 20.2657s;"></div><div class="particle" style="width: 3.28101px; height: 3.28101px; left: 1820.81px; animation-duration: 32.0457s; animation-delay: 9.01556s;"></div><div class="particle" style="width: 4.90227px; height: 4.90227px; left: 1868.3px; animation-duration: 25.0754s; animation-delay: 1.58718s;"></div><div class="particle" style="width: 3.75979px; height: 3.75979px; left: 2438.49px; animation-duration: 24.7395s; animation-delay: 23.691s;"></div><div class="particle" style="width: 5.56923px; height: 5.56923px; left: 1264.86px; animation-duration: 24.61s; animation-delay: 4.77209s;"></div><div class="particle" style="width: 2.25602px; height: 2.25602px; left: 85.1213px; animation-duration: 27.816s; animation-delay: 10.217s;"></div><div class="particle" style="width: 3.7898px; height: 3.7898px; left: 326.683px; animation-duration: 26.3583s; animation-delay: 12.5564s;"></div><div class="particle" style="width: 2.71197px; height: 2.71197px; left: 2731.12px; animation-duration: 23.6849s; animation-delay: 15.1077s;"></div><div class="particle" style="width: 5.57149px; height: 5.57149px; left: 338.417px; animation-duration: 23.0834s; animation-delay: 13.5907s;"></div><div class="particle" style="width: 5.00456px; height: 5.00456px; left: 1031.38px; animation-duration: 20.3696s; animation-delay: 19.8616s;"></div><div class="particle" style="width: 1.89587px; height: 1.89587px; left: 2384.07px; animation-duration: 24.3454s; animation-delay: 20.9962s;"></div><div class="particle" style="width: 2.4822px; height: 2.4822px; left: 1068.7px; animation-duration: 34.0733s; animation-delay: 10.9349s;"></div><div class="particle" style="width: 3.50903px; height: 3.50903px; left: 1668.94px; animation-duration: 20.2989s; animation-delay: 9.72888s;"></div><div class="particle" style="width: 1.10762px; height: 1.10762px; left: 2396.12px; animation-duration: 33.0849s; animation-delay: 18.1325s;"></div><div class="particle" style="width: 5.87033px; height: 5.87033px; left: 348.865px; animation-duration: 21.8079s; animation-delay: 1.83058s;"></div><div class="particle" style="width: 2.748px; height: 2.748px; left: 1122.96px; animation-duration: 24.766s; animation-delay: 1.73849s;"></div><div class="particle" style="width: 1.50476px; height: 1.50476px; left: 1816.99px; animation-duration: 27.6516s; animation-delay: 8.09734s;"></div><div class="particle" style="width: 1.89129px; height: 1.89129px; left: 1813.87px; animation-duration: 25.2354s; animation-delay: 6.7454s;"></div><div class="particle" style="width: 1.89682px; height: 1.89682px; left: 22.8273px; animation-duration: 23.8538s; animation-delay: 22.3308s;"></div><div class="particle" style="width: 4.17391px; height: 4.17391px; left: 16.5017px; animation-duration: 26.6344s; animation-delay: 18.6651s;"></div><div class="particle" style="width: 4.67798px; height: 4.67798px; left: 1507.51px; animation-duration: 28.8002s; animation-delay: 18.2551s;"></div><div class="particle" style="width: 4.4753px; height: 4.4753px; left: 720.078px; animation-duration: 23.3587s; animation-delay: 16.0429s;"></div><div class="particle" style="width: 1.14223px; height: 1.14223px; left: 1947.61px; animation-duration: 24.8321s; animation-delay: 5.0014s;"></div><div class="particle" style="width: 3.2685px; height: 3.2685px; left: 3258.39px; animation-duration: 21.5541s; animation-delay: 18.4982s;"></div><div class="particle" style="width: 3.46533px; height: 3.46533px; left: 2837.98px; animation-duration: 20.004s; animation-delay: 13.2003s;"></div><div class="particle" style="width: 5.0257px; height: 5.0257px; left: 346.048px; animation-duration: 24.2547s; animation-delay: 10.9929s;"></div><div class="particle" style="width: 2.17363px; height: 2.17363px; left: 2756.65px; animation-duration: 25.1742s; animation-delay: 9.5381s;"></div><div class="particle" style="width: 1.73949px; height: 1.73949px; left: 1891.68px; animation-duration: 29.1734s; animation-delay: 11.1072s;"></div><div class="particle" style="width: 4.47462px; height: 4.47462px; left: 76.7398px; animation-duration: 25.8584s; animation-delay: 2.36398s;"></div><div class="particle" style="width: 3.4096px; height: 3.4096px; left: 865.011px; animation-duration: 26.1799s; animation-delay: 3.22809s;"></div><div class="particle" style="width: 3.4375px; height: 3.4375px; left: 1660.97px; animation-duration: 20.3201s; animation-delay: 10.2369s;"></div><div class="particle" style="width: 5.44594px; height: 5.44594px; left: 2240.76px; animation-duration: 21.0382s; animation-delay: 2.14478s;"></div><div class="particle" style="width: 1.43195px; height: 1.43195px; left: 1334.64px; animation-duration: 25.0163s; animation-delay: 23.9641s;"></div><div class="particle" style="width: 2.222px; height: 2.222px; left: 1680.4px; animation-duration: 33.1751s; animation-delay: 6.16995s;"></div><div class="particle" style="width: 1.36485px; height: 1.36485px; left: 622.551px; animation-duration: 31.5715s; animation-delay: 17.0636s;"></div><div class="particle" style="width: 3.20519px; height: 3.20519px; left: 2372.07px; animation-duration: 30.7532s; animation-delay: 15.9544s;"></div><div class="particle" style="width: 3.12841px; height: 3.12841px; left: 1783.27px; animation-duration: 26.0119s; animation-delay: 20.1928s;"></div><div class="particle" style="width: 3.70941px; height: 3.70941px; left: 383.474px; animation-duration: 31.9171s; animation-delay: 23.1352s;"></div><div class="particle" style="width: 1.03896px; height: 1.03896px; left: 794.565px; animation-duration: 25.9223s; animation-delay: 12.3736s;"></div><div class="particle" style="width: 4.39644px; height: 4.39644px; left: 3368.68px; animation-duration: 31.2903s; animation-delay: 12.8312s;"></div><div class="particle" style="width: 2.7287px; height: 2.7287px; left: 2318.04px; animation-duration: 33.684s; animation-delay: 17.7206s;"></div><div class="particle" style="width: 4.79834px; height: 4.79834px; left: 3310.48px; animation-duration: 31.1061s; animation-delay: 1.19881s;"></div><div class="particle" style="width: 3.58765px; height: 3.58765px; left: 2048.94px; animation-duration: 29.4556s; animation-delay: 7.37986s;"></div></div>
+    
+    <div class="container">
+        <!-- Video Section -->
+        <div class="video-container">
+            <div class="video-border">
+                <div class="video-content">
+                    <video autoplay="" muted="" loop="" playsinline="" webkit-playsinline="">
+                        <source src="hawkview_logo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-placeholder" style="display: none;">
+                        HAWKVIEW<br>LOGO
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1 class="title-shimmer">HAWKVIEW</h1>
+            <p class="subtitle">Revolutionary AI Shopping Assistant</p>
+        </div>
+        
+        <!-- Feature Boxes -->
+        <div class="features-container">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title">AI-Powered Intelligence</h3>
+                    <p class="feature-description">Advanced machine learning algorithms that understand your shopping preferences with unprecedented accuracy.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🔍</span>
+                    <h3 class="feature-title">Smart Product Discovery</h3>
+                    <p class="feature-description">Instantly find the best deals across thousands of retailers with our intelligent search engine.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">💎</span>
+                    <h3 class="feature-title">Premium Experience</h3>
+                    <p class="feature-description">Enjoy a seamless, luxury shopping experience with real-time price tracking and exclusive deals.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-title">Lightning Performance</h3>
+                    <p class="feature-description">Get instant results with our optimized algorithms and cloud-based infrastructure.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Proper spacing -->
+        <div class="spacer"></div>
+        
+        <!-- Install Button -->
+        <div class="install-container">
+            <button id="installBtn" class="install-btn" onclick="installHawkview()">
+                ⬇️ Install HAWKVIEW
+            </button>
+        </div>
+        
+        <!-- Install Status -->
+        <div id="installStatus" class="install-status">
+            <div>✅ HAWKVIEW Installed Successfully!</div>
+            <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Ready to revolutionize your shopping experience</div>
+        </div>
+    </div>
+    
+    <script>
+        // Create enhanced animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 50 : 80;
+            
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 5 + 1;
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 15 + 20;
+                const delay = Math.random() * 25;
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = startX + 'px';
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = delay + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Install function
+        function installHawkview() {
+            const btn = document.getElementById('installBtn');
+            const status = document.getElementById('installStatus');
+            
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Installing...';
+            
+            setTimeout(() => {
+                btn.style.display = 'none';
+                status.style.display = 'block';
+                
+                // Simulate actual PWA install prompt
+                if ('serviceWorker' in navigator) {
+                    console.log('HAWKVIEW installation initiated');
+                }
+                
+                setTimeout(() => {
+                    status.style.animation = 'none';
+                }, 2000);
+            }, 2000);
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Video error handling
+            const video = document.querySelector('video');
+            const placeholder = document.querySelector('.video-placeholder');
+            
+            if (video) {
+                video.addEventListener('error', () => {
+                    console.log('Video loading error, showing placeholder');
+                    video.style.display = 'none';
+                    placeholder.style.display = 'flex';
+                });
+                
+                video.addEventListener('loadeddata', () => {
+                    console.log('Video loaded successfully');
+                    placeholder.style.display = 'none';
+                });
+            }
+        });
+        
+        // Recreate particles on resize
+        window.addEventListener('resize', () => {
+            createParticles();
+        });
+    </script>
+<script defer="" src="./HAWKVIEW - Revolutionary AI Shopping Assistant_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;95aaae0f5de9d72c&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.6.2&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDvodQATPMVvONhZyQQEU%2B%2Bf0ZZhAFt4JiFVoVbZzz4hik0kiKDVKUKoojfZpNWBjSAtIh1GTlOdqlpGzQr1iSEguqF6JNZv8cIEDOxQMCrIt3Ch1GexcewM3pYM%2F8hc9%2Fycx4HpRNyPDjEJqbAzAWaM1lkq2OFvvnW3uXoMvAI6COGePmGiPJeSMok9FK0dkbb1fQHE6%2BTZkJ0AqGpjgTt7R08doBxCWjgAt0BTcyfgtl74wHn9%2FXsMcbH12rqTUSFzNqMua%2BTRip%2FRgfEQEqkK6QB5RDx6907iFgFQ%2B2fAlI7MmP8%2Br5tJGuJG0yyaAz9ZMdOewNk4HaE6k0aeoRgqVBZ%2FnXKNilelle8CDCgrxrjm%2FJiJbu90jE3SSeMBm3h98CLBIKfd4e33t5VVknCs8mHtcNFbQcUnCqcNpSN6G02HbCCzVdqqHiv%2BLOBPZ%2BGNH%2FwNq%2BAWRo88Dp%2FiHesp84%2BEP2TKFW%2FGqCJsoqJVKLRuYcpa3a%2BacAtZwz4BOvYJrte2SZCcawJp8gorANkU%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDvodQATPMVvONhZyQQEU++f0ZZhAFt4JiFVoVbZzz4hik0kiKDVKUKoojfZpNWBjSAtIh1GTlOdqlpGzQr1iSEguqF6JNZv8cIEDOxQMCrIt3Ch1GexcewM3pYM/8hc9/ycx4HpRNyPDjEJqbAzAWaM1lkq2OFvvnW3uXoMvAI6COGePmGiPJeSMok9FK0dkbb1fQHE6+TZkJ0AqGpjgTt7R08doBxCWjgAt0BTcyfgtl74wHn9/XsMcbH12rqTUSFzNqMua+TRip/RgfEQEqkK6QB5RDx6907iFgFQ+2fAlI7MmP8+r5tJGuJG0yyaAz9ZMdOewNk4HaE6k0aeoRgqVBZ/nXKNilelle8CDCgrxrjm/JiJbu90jE3SSeMBm3h98CLBIKfd4e33t5VVknCs8mHtcNFbQcUnCqcNpSN6G02HbCCzVdqqHiv+LOBPZ+GNH/wNq+AWRo88Dp/iHesp84+EP2TKFW/GqCJsoqJVKLRuYcpa3a+acAtZwz4BOvYJrte2SZCcawJp8gorANkU=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="./HAWKVIEW - Revolutionary AI Shopping Assistant_files/notice_dialog.js.download"></script>
+    </body></html>
