@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>HAWKVIEW - Revolutionary AI Shopping Assistant (Debug)</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            min-height: 100vh;
+            color: #F0C55F;
+            overflow-x: hidden;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #F0C55F;
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: float 25s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.25;
+            }
+            90% {
+                opacity: 0.25;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .video-border {
+            background: linear-gradient(45deg, #F0C55F, #d4af37, #F0C55F);
+            padding: 4px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 40px rgba(240, 197, 95, 0.4),
+                0 0 80px rgba(240, 197, 95, 0.2);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 
+                    0 0 40px rgba(240, 197, 95, 0.4),
+                    0 0 80px rgba(240, 197, 95, 0.2);
+            }
+            to {
+                box-shadow: 
+                    0 0 60px rgba(240, 197, 95, 0.6),
+                    0 0 120px rgba(240, 197, 95, 0.3);
+            }
+        }
+        
+        .title-shimmer {
+            background: linear-gradient(45deg, #F0C55F, #fff, #F0C55F, #d4af37);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(240, 197, 95, 0.08));
+            border: 2px solid rgba(240, 197, 95, 0.6);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            padding: 1rem;
+        }
+        
+        .feature-card:hover {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.75), rgba(240, 197, 95, 0.15));
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(240, 197, 95, 0.4);
+            border-color: rgba(240, 197, 95, 0.8);
+        }
+        
+        .install-btn {
+            background: linear-gradient(45deg, #F0C55F, #FFD700);
+            color: #000;
+            transition: all 0.3s ease;
+            min-height: 44px;
+        }
+        
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(240, 197, 95, 0.4);
+        }
+        
+        .install-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .video-debug-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #F0C55F;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 10;
+            max-width: 200px;
+        }
+        
+        .video-fallback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #F0C55F;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #F0C55F;
+        }
+        
+        .manual-play-btn {
+            background: #F0C55F;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .video-container {
+                max-width: 98vw;
+                margin: 5px auto;
+            }
+            
+            .mobile-padding {
+                padding: 8px;
+            }
+            
+            .features-container {
+                max-width: 90vw;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .feature-card {
+                padding: 0.75rem;
+            }
+            
+            .feature-card h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .feature-card p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+            }
+            
+            .title-size {
+                font-size: clamp(2rem, 6vw, 4rem);
+            }
+            
+            .subtitle-size {
+                font-size: clamp(1rem, 3vw, 1.5rem);
+            }
+            
+            .video-debug-info {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 10px auto;
+                max-width: 100%;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .video-container {
+                max-width: 1000px;
+            }
+            
+            .features-container {
+                max-width: 800px;
+            }
+            
+            .feature-card h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .feature-card p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+            
+            .title-size {
+                font-size: 4rem;
+            }
+            
+            .subtitle-size {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="min-h-screen flex flex-col items-center mobile-padding">
+        <!-- Video Section -->
+        <div class="video-container w-full mt-4 mb-8">
+            <div class="video-border">
+                <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                    <video id="hawkviewVideo" 
+                           autoplay muted loop playsinline webkit-playsinline
+                           preload="metadata" 
+                           controls
+                           style="border-radius: 16px;"
+                           class="absolute top-0 left-0 w-full h-full object-cover">
+                        <source src="hawkview_logo.mp4" type="video/mp4">
+                        <source src="hawkview_logo.webm" type="video/webm">
+                        <source src="hawkview_logo.ogv" type="video/ogg">
+                        <div class="video-fallback">
+                            <p>📹 Video Debug Mode</p>
+                            <p>Check console for details</p>
+                            <button class="manual-play-btn" onclick="playVideo()">▶️ Try Manual Play</button>
+                        </div>
+                    </video>
+                    
+                    <div class="video-debug-info" id="videoDebugInfo">
+                        <div><strong>🔍 Video Debug Status:</strong></div>
+                        <div id="videoStatus">Initializing...</div>
+                        <div id="videoFormats">Checking formats...</div>
+                        <div id="videoErrors"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Title Section -->
+        <div class="text-center mb-8">
+            <h1 class="title-shimmer title-size font-black tracking-wider mb-4">HAWKVIEW</h1>
+            <p class="subtitle-size font-normal text-yellow-300 tracking-wide">Revolutionary AI Shopping Assistant</p>
+        </div>
+        
+        <!-- Features Grid -->
+        <div class="features-container w-full mx-auto mb-8">
+            <div class="feature-grid grid md:grid-cols-2 gap-6">
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🤖</div>
+                    <h3 class="font-bold text-yellow-300">AI-Powered Intelligence</h3>
+                    <p class="text-yellow-200 opacity-90">Advanced machine learning algorithms that understand your shopping preferences with unprecedented accuracy.</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🔍</div>
+                    <h3 class="font-bold text-yellow-300">Smart Product Discovery</h3>
+                    <p class="text-yellow-200 opacity-90">Instantly find the best deals across thousands of retailers with our intelligent search engine.</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">💎</div>
+                    <h3 class="font-bold text-yellow-300">Premium Experience</h3>
+                    <p class="text-yellow-200 opacity-90">Enjoy a seamless, luxury shopping experience with real-time price tracking and exclusive deals.</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">⚡</div>
+                    <h3 class="font-bold text-yellow-300">Lightning Performance</h3>
+                    <p class="text-yellow-200 opacity-90">Get instant results with our optimized algorithms and cloud-based infrastructure.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Install Button -->
+        <div class="w-full max-w-md mb-8">
+            <button id="installBtn" class="install-btn w-full py-4 px-8 rounded-full font-bold text-lg tracking-wide" onclick="installHawkview()">
+                ⬇️ Install HAWKVIEW
+            </button>
+        </div>
+        
+        <!-- Install Status -->
+        <div id="installStatus" class="hidden fixed bottom-6 left-4 right-4 bg-green-900 bg-opacity-20 border-2 border-green-400 border-opacity-50 rounded-2xl p-4 text-center backdrop-blur-lg">
+            <div class="text-green-400 font-bold text-lg">
+                ✅ HAWKVIEW Installed Successfully! 
+            </div>
+            <div class="text-green-300 text-sm mt-1">Ready to revolutionize your shopping experience</div>
+        </div>
+    </div>
+    
+    <script>
+        // Enhanced video debugging
+        const video = document.getElementById('hawkviewVideo');
+        const debugInfo = document.getElementById('videoDebugInfo');
+        const statusDiv = document.getElementById('videoStatus');
+        const formatsDiv = document.getElementById('videoFormats');
+        const errorsDiv = document.getElementById('videoErrors');
+        
+        let debugLog = [];
+        
+        function updateDebugInfo() {
+            statusDiv.innerHTML = debugLog.slice(-3).join('<br>');
+        }
+        
+        function logDebug(message) {
+            console.log(`[HAWKVIEW Video Debug] ${message}`);
+            debugLog.push(new Date().toLocaleTimeString() + ': ' + message);
+            updateDebugInfo();
+        }
+        
+        // Video format support detection
+        function checkVideoSupport() {
+            const formats = [
+                { ext: 'mp4', mime: 'video/mp4; codecs="avc1.42E01E"' },
+                { ext: 'webm', mime: 'video/webm; codecs="vp8, vorbis"' },
+                { ext: 'ogv', mime: 'video/ogg; codecs="theora"' }
+            ];
+            
+            const supported = formats.filter(format => 
+                video.canPlayType(format.mime) !== ''
+            ).map(format => format.ext);
+            
+            formatsDiv.innerHTML = 'Supported: ' + (supported.length ? supported.join(', ') : 'None');
+            logDebug('Supported formats: ' + supported.join(', '));
+        }
+        
+        // Comprehensive video event listeners
+        video.addEventListener('loadstart', () => logDebug('📥 Load started'));
+        video.addEventListener('durationchange', () => logDebug('⏱️ Duration: ' + video.duration + 's'));
+        video.addEventListener('loadedmetadata', () => logDebug('📊 Metadata loaded'));
+        video.addEventListener('loadeddata', () => logDebug('📄 Data loaded'));
+        video.addEventListener('progress', () => logDebug('⏳ Loading progress'));
+        video.addEventListener('canplay', () => logDebug('▶️ Can play'));
+        video.addEventListener('canplaythrough', () => logDebug('🎬 Can play through'));
+        video.addEventListener('playing', () => logDebug('✅ Playing'));
+        video.addEventListener('pause', () => logDebug('⏸️ Paused'));
+        video.addEventListener('ended', () => logDebug('🔚 Ended'));
+        video.addEventListener('waiting', () => logDebug('⏳ Waiting'));
+        video.addEventListener('seeking', () => logDebug('🔍 Seeking'));
+        video.addEventListener('seeked', () => logDebug('🎯 Seeked'));
+        
+        video.addEventListener('error', (e) => {
+            const error = video.error;
+            let errorMsg = 'Unknown error';
+            
+            if (error) {
+                switch (error.code) {
+                    case 1: errorMsg = 'MEDIA_ERR_ABORTED'; break;
+                    case 2: errorMsg = 'MEDIA_ERR_NETWORK'; break;
+                    case 3: errorMsg = 'MEDIA_ERR_DECODE'; break;
+                    case 4: errorMsg = 'MEDIA_ERR_SRC_NOT_SUPPORTED'; break;
+                }
+                errorMsg += ': ' + error.message;
+            }
+            
+            logDebug('❌ Error: ' + errorMsg);
+            errorsDiv.innerHTML = '❌ ' + errorMsg;
+            console.error('[HAWKVIEW Video Error]', error);
+        });
+        
+        // Autoplay detection
+        function testAutoplay() {
+            const testVideo = document.createElement('video');
+            testVideo.muted = true;
+            testVideo.autoplay = true;
+            testVideo.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMWF2YzFtcDQxAAAACGZyZWUAAAAATW1kYXQAAAKuBgX//4fcRem95tlIt5Ys2CDZI+7veDI2NCAtIGNvcmUgMTU5IC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIEdQTCB2ZXJzaW9uIDIuMC4yIC0gZnVsbCBzdXBwb3J0IG1lOiBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvcHRpb25zOiBjYWJhYz0xIHJlZj0zIGRlYmxvY2s9MTowOjAgYW5hbHlzZT0weDM6MHgxMTMgbWU9aGV4IHN1Ym1lPTcgcHN5PTEgcHN5X3JkPTEuMDA6MC4wMCBtaXhlZF9yZWY9MSBtZV9yYW5nZT0xNiBjaHJvbWFfbWU9MSB0cmVsbGlzPTEgOHg4ZGN0PTEgY3FtPTAgZGVhZHpvbmU9MjEsMTEgZmFzdF9wc2tpcD0xIGNocm9tYV9xcF9vZmZzZXQ9LTIgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBudWI9MCBiaW50PTEgc2V0PTMgcXA9MCBpcF9yYXRpbz0xLjQwIGFxPTA6MS4wMAAAAClliUZEIh/9e/b27tb/2r/6/q7/m/P2b/6u/6/9e/q///V//O/u//n+6fgAABAAAEJgZcEAkAAVG5M0IABBAAAEJgZcEAkAAVG5M0IABBAAAEJgZcEAkAAVG5M0IAABBAAAAAA==';
+            
+            testVideo.play().then(() => {
+                logDebug('✅ Autoplay supported');
+            }).catch(() => {
+                logDebug('❌ Autoplay blocked - manual play required');
+                showManualPlayButton();
+            });
+        }
+        
+        function showManualPlayButton() {
+            const fallback = document.querySelector('.video-fallback');
+            if (fallback) {
+                fallback.style.display = 'block';
+            }
+        }
+        
+        // Manual play function
+        function playVideo() {
+            logDebug('🎮 Manual play attempted');
+            video.play().then(() => {
+                logDebug('✅ Manual play successful');
+                const fallback = document.querySelector('.video-fallback');
+                if (fallback) fallback.style.display = 'none';
+            }).catch(e => {
+                logDebug('❌ Manual play failed: ' + e.message);
+                console.error('Manual play failed:', e);
+            });
+        }
+        
+        // Network status detection
+        function checkNetworkStatus() {
+            if (navigator.onLine) {
+                logDebug('🌐 Online');
+            } else {
+                logDebug('🔌 Offline');
+            }
+        }
+        
+        // Create enhanced animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 50 : 80;
+            
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 5 + 1;
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 15 + 20;
+                const delay = Math.random() * 25;
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = startX + 'px';
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = delay + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Install function
+        function installHawkview() {
+            const btn = document.getElementById('installBtn');
+            const status = document.getElementById('installStatus');
+            
+            btn.disabled = true;
+            btn.innerHTML = '⚙️ Installing...';
+            
+            setTimeout(() => {
+                btn.style.display = 'none';
+                status.classList.remove('hidden');
+                status.classList.add('animate-pulse');
+                
+                if ('serviceWorker' in navigator) {
+                    logDebug('🔧 Installation initiated');
+                }
+                
+                setTimeout(() => {
+                    status.classList.remove('animate-pulse');
+                }, 2000);
+            }, 2000);
+        }
+        
+        // Initialize everything
+        window.addEventListener('load', () => {
+            logDebug('🚀 HAWKVIEW Debug Mode Initialized');
+            createParticles();
+            checkVideoSupport();
+            checkNetworkStatus();
+            testAutoplay();
+            
+            // Check if video file exists
+            fetch('hawkview_logo.mp4', { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        logDebug('📁 Video file found (hawkview_logo.mp4)');
+                    } else {
+                        logDebug('❌ Video file not found (hawkview_logo.mp4)');
+                    }
+                })
+                .catch(() => {
+                    logDebug('❌ Cannot check video file existence');
+                });
+        });
+        
+        // Recreate particles on resize
+        window.addEventListener('resize', () => {
+            createParticles();
+        });
+        
+        // Hide debug info on mobile after 10 seconds
+        if (window.innerWidth < 768) {
+            setTimeout(() => {
+                debugInfo.style.display = 'none';
+            }, 10000);
+        }
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"95aac5047b1cd728","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.6.2","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDpHn%2F5JZTeN414iPd5umACUpF9ZsKOe5nm%2Fq8Mgw9oNyRRhc%2BMMCh1BWdecufJ3f5up9pxmIZns1%2Bmb8XA%2BJhP7Z1pwpFiBHfqwudpaql%2Fn9xDY6cmeVTxABFugHdtxNtxtE9Z65vaF%2FUUd28JIh5XzNwOqnF6yEiRYwWnhv9xP2MTBZGDg67b7nBL%2BLTc8icJi9TDU5USnR0LAEkMCZmgUKBReKR1rmOdRh6bvs%2BV0dY0f%2BDjFqkOUWgE%2BacXihJAHvsfa%2BnG5%2FcrvhyFgPLdMmu1qOhdrlVXJOg%2FicLxlniQy8cUZUSPhv5%2FOxLjg9phMoZ5%2BTlIEVxNaBj7X7VjsGygEY2ZwffkjAQJdgJX3po%2FfkS%2FnB521OknFCRCHZZ3fg1vXiW107hG8FKavJraDvSJ5efaAZ9m3ukQPmHoGtJEkcKWDboOG%2FqW8lM%2BeB8NyJlpb703Ho241Jemr6wPZ%2BJ5opy24xww0q73qG2SZp2N2fwfxZS%2FuKxV18QQIKMCl44WUGt1bcpFe%2BPcgcUgE%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDpHn/5JZTeN414iPd5umACUpF9ZsKOe5nm/q8Mgw9oNyRRhc+MMCh1BWdecufJ3f5up9pxmIZns1+mb8XA+JhP7Z1pwpFiBHfqwudpaql/n9xDY6cmeVTxABFugHdtxNtxtE9Z65vaF/UUd28JIh5XzNwOqnF6yEiRYwWnhv9xP2MTBZGDg67b7nBL+LTc8icJi9TDU5USnR0LAEkMCZmgUKBReKR1rmOdRh6bvs+V0dY0f+DjFqkOUWgE+acXihJAHvsfa+nG5/crvhyFgPLdMmu1qOhdrlVXJOg/icLxlniQy8cUZUSPhv5/OxLjg9phMoZ5+TlIEVxNaBj7X7VjsGygEY2ZwffkjAQJdgJX3po/fkS/nB521OknFCRCHZZ3fg1vXiW107hG8FKavJraDvSJ5efaAZ9m3ukQPmHoGtJEkcKWDboOG/qW8lM+eB8NyJlpb703Ho241Jemr6wPZ+J5opy24xww0q73qG2SZp2N2fwfxZS/uKxV18QQIKMCl44WUGt1bcpFe+PcgcUgE=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
