@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>HAWKVIEW - Revolutionary AI Shopping Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            min-height: 100vh;
+            color: #F0C55F;
+            overflow-x: hidden;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #F0C55F;
+            border-radius: 50%;
+            opacity: 0.25;
+            animation: float 25s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.25;
+            }
+            90% {
+                opacity: 0.25;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .video-border {
+            background: linear-gradient(45deg, #F0C55F, #d4af37, #F0C55F);
+            padding: 4px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 40px rgba(240, 197, 95, 0.4),
+                0 0 80px rgba(240, 197, 95, 0.2);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 
+                    0 0 40px rgba(240, 197, 95, 0.4),
+                    0 0 80px rgba(240, 197, 95, 0.2);
+            }
+            to {
+                box-shadow: 
+                    0 0 60px rgba(240, 197, 95, 0.6),
+                    0 0 120px rgba(240, 197, 95, 0.3);
+            }
+        }
+        
+        .title-shimmer {
+            background: linear-gradient(45deg, #F0C55F, #fff, #F0C55F, #d4af37);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(240, 197, 95, 0.08));
+            border: 2px solid rgba(240, 197, 95, 0.6);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            padding: 1rem !important;
+        }
+        
+        .feature-card:hover {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.75), rgba(240, 197, 95, 0.15));
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(240, 197, 95, 0.4);
+            border-color: rgba(240, 197, 95, 0.8);
+        }
+        
+        .feature-card h3 {
+            color: #F0C55F !important;
+            font-size: 1.1rem !important;
+            margin-bottom: 0.75rem !important;
+        }
+        
+        .feature-card p {
+            color: #F5F5DC !important;
+            opacity: 0.95 !important;
+            font-size: 0.9rem !important;
+            line-height: 1.5 !important;
+        }
+        
+        .install-btn {
+            background: linear-gradient(45deg, #F0C55F, #FFD700);
+            color: #000;
+            transition: all 0.3s ease;
+            min-height: 44px;
+        }
+        
+        .install-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(240, 197, 95, 0.4);
+        }
+        
+        .install-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .features-container {
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+        }
+        
+        @media (max-width: 768px) {
+            .video-container {
+                max-width: 98vw;
+                margin: 5px auto;
+            }
+            
+            .mobile-padding {
+                padding: 8px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .feature-card {
+                padding: 0.75rem !important;
+            }
+            
+            .feature-card h3 {
+                font-size: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .feature-card p {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+            }
+            
+            .title-size {
+                font-size: clamp(2rem, 6vw, 4rem);
+            }
+            
+            .subtitle-size {
+                font-size: clamp(1rem, 3vw, 1.5rem);
+                color: #F0E68C !important;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .video-container {
+                max-width: 1000px;
+            }
+            
+            .title-size {
+                font-size: 4rem;
+            }
+            
+            .subtitle-size {
+                font-size: 1.5rem;
+                color: #F0E68C !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="min-h-screen flex flex-col items-center mobile-padding">
+        <!-- Video Section -->
+        <div class="video-container w-full mt-4 mb-8">
+            <div class="video-border">
+                <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                    <video id="hawkviewVideo" class="absolute top-0 left-0 w-full h-full object-cover" style="border-radius: 16px;" autoplay muted loop playsinline webkit-playsinline preload="metadata" controls>
+                        <source src="hawkview_logo.mp4" type="video/mp4">
+                        <source src="hawkview_logo.webm" type="video/webm">
+                        <source src="hawkview_logo.ogv" type="video/ogg">
+                        <div class="video-fallback text-center p-8">
+                            <p class="text-lg mb-4">Video cannot be played. Check console for details.</p>
+                            <button onclick="playVideo()" class="bg-yellow-500 text-black px-4 py-2 rounded">Try Manual Play</button>
+                        </div>
+                    </video>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Title Section -->
+        <div class="text-center mb-8">
+            <h1 class="title-shimmer title-size font-black tracking-wider mb-4">HAWKVIEW</h1>
+            <p class="subtitle-size font-normal tracking-wide">Revolutionary AI Shopping Assistant</p>
+        </div>
+        
+        <!-- Features Grid -->
+        <div class="features-container w-full">
+            <div class="feature-grid grid md:grid-cols-2 gap-6 mb-8">
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🤖</div>
+                    <h3 class="font-bold">AI-Powered Intelligence</h3>
+                    <p>Advanced machine learning algorithms that understand your shopping preferences with unprecedented accuracy.</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">🔍</div>
+                    <h3 class="font-bold">Smart Product Discovery</h3>
+                    <p>Instantly find the best deals across thousands of retailers with our intelligent search engine.</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">💎</div>
+                    <h3 class="font-bold">Premium Experience</h3>
+                    <p>Enjoy a seamless, luxury shopping experience with real-time price tracking and exclusive deals.</p>
+                </div>
+                
+                <div class="feature-card rounded-2xl text-center">
+                    <div class="text-3xl mb-3">⚡</div>
+                    <h3 class="font-bold">Lightning Performance</h3>
+                    <p>Get instant results with our optimized algorithms and cloud-based infrastructure.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Install Button -->
+        <div class="w-full max-w-md mb-8">
+            <button id="installBtn" class="install-btn w-full py-4 px-8 rounded-full font-bold text-lg tracking-wide" onclick="installHawkview()">
+                <span class="mr-2">⬇️</span>
+                Install HAWKVIEW
+            </button>
+        </div>
+        
+        <!-- Install Status -->
+        <div id="installStatus" class="hidden fixed bottom-6 left-4 right-4 bg-green-900 bg-opacity-20 border-2 border-green-400 border-opacity-50 rounded-2xl p-4 text-center backdrop-blur-lg">
+            <div class="text-green-400 font-bold text-lg">
+                <span class="mr-2">✅</span>
+                HAWKVIEW Installed Successfully! 
+            </div>
+            <div class="text-green-300 text-sm mt-1">Ready to revolutionize your shopping experience</div>
+        </div>
+    </div>
+    
+    <script>
+        // Create enhanced animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 50 : 80;
+            
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 5 + 1;
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 15 + 20;
+                const delay = Math.random() * 25;
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = startX + 'px';
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = delay + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Video debugging and functionality
+        const video = document.getElementById('hawkviewVideo');
+        
+        if (video) {
+            video.addEventListener('loadstart', () => console.log('[HAWKVIEW Video Debug] 📥 Video load started'));
+            video.addEventListener('loadedmetadata', () => {
+                console.log('[HAWKVIEW Video Debug] 📊 Video metadata loaded');
+                console.log(`[HAWKVIEW Video Debug] Duration: ${video.duration}s`);
+                console.log(`[HAWKVIEW Video Debug] Dimensions: ${video.videoWidth}x${video.videoHeight}`);
+            });
+            video.addEventListener('loadeddata', () => console.log('[HAWKVIEW Video Debug] ✅ Video data loaded successfully'));
+            video.addEventListener('canplay', () => console.log('[HAWKVIEW Video Debug] 🎬 Video can start playing'));
+            video.addEventListener('play', () => console.log('[HAWKVIEW Video Debug] ▶️ Video started playing'));
+            video.addEventListener('error', (e) => {
+                console.error('[HAWKVIEW Video Debug] ❌ Video error:', e);
+                console.log('[HAWKVIEW Video Debug] ❌ Video file not found (hawkview_logo.mp4)');
+            });
+            video.addEventListener('waiting', () => console.log('[HAWKVIEW Video Debug] ⏳ Video waiting for data'));
+        }
+        
+        function playVideo() {
+            if (video) {
+                video.play().catch(e => console.error('[HAWKVIEW Video Debug] Play failed:', e));
+            }
+        }
+        
+        // Install function
+        function installHawkview() {
+            const btn = document.getElementById('installBtn');
+            const status = document.getElementById('installStatus');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="mr-2">⏳</span>Installing...';
+            
+            setTimeout(() => {
+                btn.style.display = 'none';
+                status.classList.remove('hidden');
+                status.classList.add('animate-pulse');
+                
+                if ('serviceWorker' in navigator) {
+                    console.log('[HAWKVIEW Video Debug] HAWKVIEW installation initiated');
+                }
+                
+                setTimeout(() => {
+                    status.classList.remove('animate-pulse');
+                }, 2000);
+            }, 2000);
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            console.log('[HAWKVIEW Video Debug] 🚀 HAWKVIEW Debug Mode Initialized');
+            
+            // Check video format support
+            const formats = [];
+            if (video && video.canPlayType) {
+                if (video.canPlayType('video/mp4')) formats.push('mp4');
+                if (video.canPlayType('video/webm')) formats.push('webm');
+                if (video.canPlayType('video/ogg')) formats.push('ogg');
+            }
+            console.log('[HAWKVIEW Video Debug] Supported formats:', formats.join(', '));
+            
+            // Check online status
+            console.log(`[HAWKVIEW Video Debug] ${navigator.onLine ? '🌐 Online' : '📴 Offline'}`);
+            
+            createParticles();
+            
+            console.log('[HAWKVIEW Video Debug] 🎉 Page fully loaded');
+        });
+        
+        // Recreate particles on resize
+        window.addEventListener('resize', () => {
+            createParticles();
+        });
+    </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"95ab2d45094bd734","serverTiming":{"name":{"cfExtPri":true,"cfEdge":true,"cfOrigin":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.6.2","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDrivuXxrSEP%2F1%2BJxb7KaiORXtE97e2UuMEM8JDS9EhMn3Q8CoYflcTi2YDDEebjf8bB%2FVxQUYxxOQ8amAloVSZRwuMl7PBBvmYszgyoJ6SJmvVM31q7qfOV6rIp8KirpWFp%2FyqnOfaZBgeYDK9%2FeQZlK%2FGO5gEwLmeBtp6IjYno48s08zlOmKGEycOEK8HrPqh%2B3XUUSsOexlhrDokYwf5DRPCoblG52Pz9dyZdk2D4Z0CoTUB4joMIp7wbQK0ZAOU5niM1hcSXj%2BobHjQycXjTajgA3xfE6x0WZBSA%2BQ87WMerDIQphxEezywRcIyLC14hNitg8JV%2FZdZtaB4wBWN%2Ff5UeA12oGG4uc2zUdTTU6fK99f%2BBpiuemEK9d2RKgXKnmf8W%2BIgzjZKj%2B7VZjAyN8OP1ISNIQg4O6MCjZesd3p64w1MhcR8zxkWr3bOb6sSk6ZxzqEVRVfG3%2BptUqhEoDQfsUvDTyjzjowGwG22dwxcklHp5hT%2FdGuntrROqa7IPFa2JBKBlXO7leN7AQcCk%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDrivuXxrSEP/1+Jxb7KaiORXtE97e2UuMEM8JDS9EhMn3Q8CoYflcTi2YDDEebjf8bB/VxQUYxxOQ8amAloVSZRwuMl7PBBvmYszgyoJ6SJmvVM31q7qfOV6rIp8KirpWFp/yqnOfaZBgeYDK9/eQZlK/GO5gEwLmeBtp6IjYno48s08zlOmKGEycOEK8HrPqh+3XUUSsOexlhrDokYwf5DRPCoblG52Pz9dyZdk2D4Z0CoTUB4joMIp7wbQK0ZAOU5niM1hcSXj+obHjQycXjTajgA3xfE6x0WZBSA+Q87WMerDIQphxEezywRcIyLC14hNitg8JV/ZdZtaB4wBWN/f5UeA12oGG4uc2zUdTTU6fK99f+BpiuemEK9d2RKgXKnmf8W+IgzjZKj+7VZjAyN8OP1ISNIQg4O6MCjZesd3p64w1MhcR8zxkWr3bOb6sSk6ZxzqEVRVfG3+ptUqhEoDQfsUvDTyjzjowGwG22dwxcklHp5hT/dGuntrROqa7IPFa2JBKBlXO7leN7AQcCk=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
