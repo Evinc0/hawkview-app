@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.genspark.ai/api/page_private?id=ncahgnwd -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAWKVIEW - Revolutionary AI Shopping Assistant</title>
+    <link rel="manifest" href="https://www.genspark.ai/api/manifest.json">
+    <link href="./HAWKVIEW - Revolutionary AI Shopping Assistant_files/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./HAWKVIEW - Revolutionary AI Shopping Assistant_files/all.min.css">
+    
+    <!-- iOS App Configuration -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="HAWKVIEW">
+    <link rel="apple-touch-icon" href="https://www.genspark.ai/api/HAWKVIEW%20LOGO.png">
+    <meta name="theme-color" content="#F0C55F">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            min-height: 100vh;
+            color: #F0C55F;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .screen.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: #F0C55F;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: floatEnhanced 20s infinite linear;
+        }
+        
+        @keyframes floatEnhanced {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(50vh) translateX(20px) rotate(180deg);
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) translateX(-20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .video-border {
+            background: linear-gradient(45deg, #F0C55F, #d4af37, #F0C55F);
+            padding: 4px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 40px rgba(240, 197, 95, 0.4),
+                0 0 80px rgba(240, 197, 95, 0.2);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 
+                    0 0 40px rgba(240, 197, 95, 0.4),
+                    0 0 80px rgba(240, 197, 95, 0.2);
+            }
+            to {
+                box-shadow: 
+                    0 0 60px rgba(240, 197, 95, 0.6),
+                    0 0 120px rgba(240, 197, 95, 0.3);
+            }
+        }
+        
+        .title-shimmer {
+            background: linear-gradient(45deg, #F0C55F, #fff, #F0C55F, #d4af37);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(240, 197, 95, 0.08));
+            border: 2px solid rgba(240, 197, 95, 0.6);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+            padding: 1.25rem;
+            margin: 0.75rem;
+            max-width: 280px;
+        }
+        
+        .feature-card:hover {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.75), rgba(240, 197, 95, 0.15));
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(240, 197, 95, 0.4);
+            border-color: rgba(240, 197, 95, 0.8);
+        }
+        
+        .feature-card h3 {
+            color: #F0C55F;
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-card p {
+            color: #F5F5DC !important;
+            opacity: 0.95 !important;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .install-btn, .auth-btn, .main-btn {
+            background: linear-gradient(45deg, #F0C55F, #FFD700);
+            color: #000;
+            transition: all 0.3s ease;
+            min-height: 48px;
+            padding: 16px 32px;
+            border: none;
+            cursor: pointer;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        .install-btn:hover, .auth-btn:hover, .main-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(240, 197, 95, 0.4);
+        }
+        
+        .install-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .auth-btn-outline {
+            background: transparent;
+            color: #F0C55F;
+            border: 2px solid #F0C55F;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-btn-outline:hover {
+            background: #F0C55F;
+            color: #000;
+            transform: translateY(-2px);
+        }
+        
+        .form-input {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(240, 197, 95, 0.3);
+            color: #F0C55F;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #F0C55F;
+            box-shadow: 0 0 20px rgba(240, 197, 95, 0.3);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(240, 197, 95, 0.6);
+        }
+        
+        .nav-tab {
+            background: rgba(240, 197, 95, 0.1);
+            border: 2px solid rgba(240, 197, 95, 0.3);
+            color: #F0C55F;
+            padding: 12px 24px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(45deg, #F0C55F, #FFD700);
+            color: #000;
+            border-color: #F0C55F;
+        }
+        
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(240, 197, 95, 0.3);
+        }
+        
+        .features-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .w-full.max-w-4xl {
+            max-width: 600px !important;
+        }
+        
+        /* Install Button Container */
+        .install-button-container {
+            width: 100%;
+            max-width: 28rem;
+            margin: 2rem auto;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .video-container {
+                max-width: 90vw !important;
+                margin: 10px auto !important;
+            }
+            
+            .features-container {
+                max-width: 350px !important;
+                width: 350px !important;
+                margin: 0 auto !important;
+                text-align: center !important;
+            }
+            
+            .feature-grid {
+                max-width: 350px !important;
+                width: 100% !important;
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+            
+            .feature-card {
+                max-width: 320px !important;
+                width: 320px !important;
+                margin: 0 auto !important;
+                padding: 1rem !important;
+            }
+            
+            .feature-card h3 {
+                font-size: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .feature-card p {
+                font-size: 0.8rem !important;
+                line-height: 1.4 !important;
+            }
+            
+            .title-size {
+                font-size: clamp(2rem, 6vw, 4rem);
+            }
+            
+            .subtitle-size {
+                font-size: clamp(1rem, 3vw, 1.5rem);
+            }
+            
+            .install-button-container {
+                max-width: 90vw;
+                padding: 0 1rem;
+            }
+            
+            .install-btn {
+                width: 100%;
+                max-width: 320px;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .video-container {
+                max-width: 600px;
+            }
+            
+            .title-size {
+                font-size: 4rem;
+            }
+            
+            .subtitle-size {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .features-container {
+                max-width: 350px !important;
+                width: 350px !important;
+                margin: 0 auto !important;
+            }
+            
+            .w-full.max-w-4xl {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+        }
+    </style>
+<style>
+    .genspark-notice-dialog {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .genspark-notice-content {
+      background-color: white;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      box-sizing: border-box;
+      padding: 10px 30px 30px 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 16px;
+    }
+
+    .genspark-notice-title {
+      color: #000;
+      font-family: Arial;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+    }
+
+    .genspark-notice-list {
+      margin: 24px 0;
+      
+      color: #606366;
+      font-family: Arial;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      padding-left: 12px;
+    }
+
+    .genspark-notice-list li {
+      margin-bottom: 12px;
+      list-style-type: disc;
+    }
+
+    .genspark-notice-list li a {
+      color: #606366;
+      text-decoration: underline;
+    }
+
+    .genspark-notice-checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      gap: 10px;
+
+      color: #232425;
+
+      font-family: Arial;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    .genspark-notice-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+      
+    .genspark-notice-ok {
+      color: #232425;
+
+      text-align: center;
+      font-family: Arial;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 150%; 
+
+      cursor: pointer;
+      display: flex;
+      height: 40px;
+      padding: 6px 14px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      align-self: stretch;
+      border-radius: 8px;
+      border: 1px solid #000;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  </style></head>
+<body>
+    <div class="particles" id="particles"><div class="particle" style="width: 5.739px; height: 5.739px; left: 587.787px; animation-duration: 20.9216s; animation-delay: 18.0655s;"></div><div class="particle" style="width: 6.41891px; height: 6.41891px; left: 3343.51px; animation-duration: 18.1588s; animation-delay: 1.27718s;"></div><div class="particle" style="width: 6.01257px; height: 6.01257px; left: 1685.65px; animation-duration: 21.7771s; animation-delay: 14.9084s;"></div><div class="particle" style="width: 2.65968px; height: 2.65968px; left: 890.701px; animation-duration: 16.8241s; animation-delay: 4.35142s;"></div><div class="particle" style="width: 2.57429px; height: 2.57429px; left: 5.22427px; animation-duration: 22.238s; animation-delay: 13.1854s;"></div><div class="particle" style="width: 3.64566px; height: 3.64566px; left: 3119.99px; animation-duration: 15.204s; animation-delay: 16.1059s;"></div><div class="particle" style="width: 4.58682px; height: 4.58682px; left: 3064.83px; animation-duration: 16.0897s; animation-delay: 2.33821s;"></div><div class="particle" style="width: 2.63443px; height: 2.63443px; left: 2497.61px; animation-duration: 19.0856s; animation-delay: 3.57585s;"></div><div class="particle" style="width: 2.03539px; height: 2.03539px; left: 2144.34px; animation-duration: 22.8085s; animation-delay: 2.85534s;"></div><div class="particle" style="width: 6.1258px; height: 6.1258px; left: 1293.03px; animation-duration: 19.5512s; animation-delay: 6.05475s;"></div><div class="particle" style="width: 4.06778px; height: 4.06778px; left: 2668.81px; animation-duration: 23.7298s; animation-delay: 11.4833s;"></div><div class="particle" style="width: 1.40959px; height: 1.40959px; left: 1946px; animation-duration: 20.0981s; animation-delay: 10.176s;"></div><div class="particle" style="width: 2.65244px; height: 2.65244px; left: 2898.45px; animation-duration: 18.5355s; animation-delay: 6.8157s;"></div><div class="particle" style="width: 6.92397px; height: 6.92397px; left: 43.8093px; animation-duration: 21.1064s; animation-delay: 16.7241s;"></div><div class="particle" style="width: 5.12282px; height: 5.12282px; left: 454.007px; animation-duration: 21.2483s; animation-delay: 5.99119s;"></div><div class="particle" style="width: 1.25269px; height: 1.25269px; left: 1927.07px; animation-duration: 23.1509s; animation-delay: 14.3282s;"></div><div class="particle" style="width: 2.63715px; height: 2.63715px; left: 2958.49px; animation-duration: 23.3112s; animation-delay: 15.9883s;"></div><div class="particle" style="width: 4.43582px; height: 4.43582px; left: 1847.5px; animation-duration: 20.9162s; animation-delay: 7.72501s;"></div><div class="particle" style="width: 4.95669px; height: 4.95669px; left: 2863.22px; animation-duration: 19.0881s; animation-delay: 2.09472s;"></div><div class="particle" style="width: 2.57199px; height: 2.57199px; left: 85.2595px; animation-duration: 15.4806s; animation-delay: 7.44771s;"></div><div class="particle" style="width: 2.6894px; height: 2.6894px; left: 2666.58px; animation-duration: 23.6002s; animation-delay: 10.5335s;"></div><div class="particle" style="width: 3.97835px; height: 3.97835px; left: 2495.32px; animation-duration: 20.4469s; animation-delay: 16.7701s;"></div><div class="particle" style="width: 2.42389px; height: 2.42389px; left: 20.5083px; animation-duration: 23.9927s; animation-delay: 6.24164s;"></div><div class="particle" style="width: 3.97483px; height: 3.97483px; left: 3245.43px; animation-duration: 24.2589s; animation-delay: 2.12478s;"></div><div class="particle" style="width: 3.42335px; height: 3.42335px; left: 523.552px; animation-duration: 16.816s; animation-delay: 11.279s;"></div><div class="particle" style="width: 2.42999px; height: 2.42999px; left: 2775.02px; animation-duration: 18.7072s; animation-delay: 1.96288s;"></div><div class="particle" style="width: 1.72988px; height: 1.72988px; left: 2034.76px; animation-duration: 15.7929s; animation-delay: 8.50185s;"></div><div class="particle" style="width: 2.5621px; height: 2.5621px; left: 1328.15px; animation-duration: 17.6279s; animation-delay: 15.6193s;"></div><div class="particle" style="width: 3.60261px; height: 3.60261px; left: 1355.59px; animation-duration: 19.3009s; animation-delay: 5.16224s;"></div><div class="particle" style="width: 3.06772px; height: 3.06772px; left: 2310.76px; animation-duration: 20.7415s; animation-delay: 6.19934s;"></div><div class="particle" style="width: 2.25165px; height: 2.25165px; left: 277.359px; animation-duration: 19.7586s; animation-delay: 19.7163s;"></div><div class="particle" style="width: 3.34223px; height: 3.34223px; left: 2085.52px; animation-duration: 21.8133s; animation-delay: 5.47941s;"></div><div class="particle" style="width: 1.9937px; height: 1.9937px; left: 4.2805px; animation-duration: 22.3615s; animation-delay: 1.56445s;"></div><div class="particle" style="width: 6.17842px; height: 6.17842px; left: 2648.47px; animation-duration: 19.9276s; animation-delay: 6.72092s;"></div><div class="particle" style="width: 2.3139px; height: 2.3139px; left: 2867.01px; animation-duration: 15.1575s; animation-delay: 4.73587s;"></div><div class="particle" style="width: 4.24964px; height: 4.24964px; left: 3270.45px; animation-duration: 16.1007s; animation-delay: 6.25915s;"></div><div class="particle" style="width: 1.49507px; height: 1.49507px; left: 756.499px; animation-duration: 21.0074s; animation-delay: 2.69179s;"></div><div class="particle" style="width: 2.39855px; height: 2.39855px; left: 3005px; animation-duration: 23.7306s; animation-delay: 6.37772s;"></div><div class="particle" style="width: 3.0148px; height: 3.0148px; left: 812.962px; animation-duration: 15.7548s; animation-delay: 8.92275s;"></div><div class="particle" style="width: 4.27826px; height: 4.27826px; left: 1857.19px; animation-duration: 19.2013s; animation-delay: 9.27627s;"></div><div class="particle" style="width: 4.91542px; height: 4.91542px; left: 1826px; animation-duration: 23.5266s; animation-delay: 10.527s;"></div><div class="particle" style="width: 4.72422px; height: 4.72422px; left: 1606.92px; animation-duration: 20.8458s; animation-delay: 9.55601s;"></div><div class="particle" style="width: 1.99028px; height: 1.99028px; left: 2186.46px; animation-duration: 20.1287s; animation-delay: 14.5205s;"></div><div class="particle" style="width: 5.20059px; height: 5.20059px; left: 2225.75px; animation-duration: 17.9794s; animation-delay: 1.63347s;"></div><div class="particle" style="width: 2.55407px; height: 2.55407px; left: 3272.47px; animation-duration: 24.946s; animation-delay: 6.07706s;"></div><div class="particle" style="width: 6.92561px; height: 6.92561px; left: 2397.22px; animation-duration: 20.3267s; animation-delay: 6.05629s;"></div><div class="particle" style="width: 6.81232px; height: 6.81232px; left: 2254.33px; animation-duration: 18.6348s; animation-delay: 1.04151s;"></div><div class="particle" style="width: 3.26263px; height: 3.26263px; left: 130.133px; animation-duration: 16.2976s; animation-delay: 10.183s;"></div><div class="particle" style="width: 2.48113px; height: 2.48113px; left: 2745.8px; animation-duration: 16.2454s; animation-delay: 3.55984s;"></div><div class="particle" style="width: 2.07454px; height: 2.07454px; left: 1723.73px; animation-duration: 22.0215s; animation-delay: 3.8363s;"></div><div class="particle" style="width: 3.77911px; height: 3.77911px; left: 2589.06px; animation-duration: 23.3414s; animation-delay: 14.81s;"></div><div class="particle" style="width: 2.56192px; height: 2.56192px; left: 3040.74px; animation-duration: 17.1078s; animation-delay: 17.4654s;"></div><div class="particle" style="width: 2.62886px; height: 2.62886px; left: 2288.81px; animation-duration: 15.238s; animation-delay: 19.0351s;"></div><div class="particle" style="width: 6.22904px; height: 6.22904px; left: 3414.86px; animation-duration: 20.4865s; animation-delay: 18.6085s;"></div><div class="particle" style="width: 4.33382px; height: 4.33382px; left: 2610.93px; animation-duration: 23.0831s; animation-delay: 19.909s;"></div><div class="particle" style="width: 6.99374px; height: 6.99374px; left: 2721.99px; animation-duration: 24.3809s; animation-delay: 17.9105s;"></div><div class="particle" style="width: 6.25733px; height: 6.25733px; left: 479.987px; animation-duration: 22.5985s; animation-delay: 5.16754s;"></div><div class="particle" style="width: 4.78466px; height: 4.78466px; left: 2724.67px; animation-duration: 22.0495s; animation-delay: 2.52461s;"></div><div class="particle" style="width: 3.85648px; height: 3.85648px; left: 2773.13px; animation-duration: 16.9799s; animation-delay: 13.4087s;"></div><div class="particle" style="width: 4.42769px; height: 4.42769px; left: 1375.06px; animation-duration: 21.5827s; animation-delay: 8.49334s;"></div><div class="particle" style="width: 3.48257px; height: 3.48257px; left: 466.462px; animation-duration: 19.7043s; animation-delay: 0.834509s;"></div><div class="particle" style="width: 5.29546px; height: 5.29546px; left: 2829.97px; animation-duration: 23.289s; animation-delay: 2.07787s;"></div><div class="particle" style="width: 2.86056px; height: 2.86056px; left: 322.555px; animation-duration: 22.9106s; animation-delay: 7.24628s;"></div><div class="particle" style="width: 2.54069px; height: 2.54069px; left: 2993.94px; animation-duration: 16.1273s; animation-delay: 0.0414604s;"></div><div class="particle" style="width: 6.11316px; height: 6.11316px; left: 2037.45px; animation-duration: 21.8695s; animation-delay: 3.94372s;"></div><div class="particle" style="width: 2.65454px; height: 2.65454px; left: 3360.72px; animation-duration: 16.5272s; animation-delay: 2.99002s;"></div><div class="particle" style="width: 2.54956px; height: 2.54956px; left: 915.167px; animation-duration: 17.1371s; animation-delay: 12.799s;"></div><div class="particle" style="width: 6.84709px; height: 6.84709px; left: 885.795px; animation-duration: 21.9509s; animation-delay: 19.1484s;"></div><div class="particle" style="width: 4.51904px; height: 4.51904px; left: 2251.3px; animation-duration: 15.0019s; animation-delay: 2.77727s;"></div><div class="particle" style="width: 1.24151px; height: 1.24151px; left: 1081.55px; animation-duration: 16.7258s; animation-delay: 2.08771s;"></div><div class="particle" style="width: 1.61521px; height: 1.61521px; left: 2431.61px; animation-duration: 17.0427s; animation-delay: 0.84319s;"></div><div class="particle" style="width: 3.91727px; height: 3.91727px; left: 3119.45px; animation-duration: 24.958s; animation-delay: 16.1159s;"></div><div class="particle" style="width: 1.00403px; height: 1.00403px; left: 3042.56px; animation-duration: 17.8062s; animation-delay: 7.93703s;"></div><div class="particle" style="width: 3.93347px; height: 3.93347px; left: 903.673px; animation-duration: 24.1034s; animation-delay: 14.8616s;"></div><div class="particle" style="width: 4.61042px; height: 4.61042px; left: 498.586px; animation-duration: 18.3049s; animation-delay: 7.28482s;"></div><div class="particle" style="width: 2.90236px; height: 2.90236px; left: 1051.63px; animation-duration: 17.5976s; animation-delay: 14.058s;"></div><div class="particle" style="width: 2.90268px; height: 2.90268px; left: 3021.88px; animation-duration: 23.4947s; animation-delay: 0.288578s;"></div><div class="particle" style="width: 4.8771px; height: 4.8771px; left: 2084.62px; animation-duration: 18.0018s; animation-delay: 12.7658s;"></div><div class="particle" style="width: 4.95245px; height: 4.95245px; left: 1976.18px; animation-duration: 17.8854s; animation-delay: 17.3112s;"></div><div class="particle" style="width: 3.41008px; height: 3.41008px; left: 1333.77px; animation-duration: 19.8559s; animation-delay: 6.92102s;"></div><div class="particle" style="width: 2.10614px; height: 2.10614px; left: 2530.29px; animation-duration: 15.7036s; animation-delay: 19.1873s;"></div><div class="particle" style="width: 2.21201px; height: 2.21201px; left: 2304.04px; animation-duration: 23.9785s; animation-delay: 13.1101s;"></div><div class="particle" style="width: 4.82025px; height: 4.82025px; left: 2686.65px; animation-duration: 21.8225s; animation-delay: 16.2381s;"></div><div class="particle" style="width: 1.55703px; height: 1.55703px; left: 2442.37px; animation-duration: 18.2685s; animation-delay: 0.956814s;"></div><div class="particle" style="width: 4.94772px; height: 4.94772px; left: 2641.26px; animation-duration: 15.2558s; animation-delay: 5.22896s;"></div><div class="particle" style="width: 2.43529px; height: 2.43529px; left: 3424.66px; animation-duration: 23.4264s; animation-delay: 18.023s;"></div><div class="particle" style="width: 6.139px; height: 6.139px; left: 1857.94px; animation-duration: 23.0124s; animation-delay: 12.4166s;"></div><div class="particle" style="width: 2.39766px; height: 2.39766px; left: 1933.72px; animation-duration: 22.7545s; animation-delay: 16.8118s;"></div><div class="particle" style="width: 4.06722px; height: 4.06722px; left: 963.789px; animation-duration: 22.5392s; animation-delay: 7.17216s;"></div><div class="particle" style="width: 4.23193px; height: 4.23193px; left: 3306.77px; animation-duration: 15.3119s; animation-delay: 15.4689s;"></div><div class="particle" style="width: 2.63252px; height: 2.63252px; left: 1162.63px; animation-duration: 22.842s; animation-delay: 13.996s;"></div><div class="particle" style="width: 2.17972px; height: 2.17972px; left: 1316.6px; animation-duration: 17.4777s; animation-delay: 18.1159s;"></div><div class="particle" style="width: 6.16032px; height: 6.16032px; left: 1712.74px; animation-duration: 22.1109s; animation-delay: 11.753s;"></div><div class="particle" style="width: 2.312px; height: 2.312px; left: 2746.94px; animation-duration: 20.1917s; animation-delay: 0.616864s;"></div><div class="particle" style="width: 4.13847px; height: 4.13847px; left: 2053.35px; animation-duration: 20.9512s; animation-delay: 10.5024s;"></div><div class="particle" style="width: 2.2569px; height: 2.2569px; left: 176.851px; animation-duration: 16.7361s; animation-delay: 1.13241s;"></div><div class="particle" style="width: 2.16218px; height: 2.16218px; left: 2547.61px; animation-duration: 15.2117s; animation-delay: 3.06978s;"></div><div class="particle" style="width: 4.46212px; height: 4.46212px; left: 2672px; animation-duration: 19.1813s; animation-delay: 0.672745s;"></div><div class="particle" style="width: 3.25127px; height: 3.25127px; left: 2265.72px; animation-duration: 19.7842s; animation-delay: 3.43851s;"></div><div class="particle" style="width: 3.81229px; height: 3.81229px; left: 192.878px; animation-duration: 21.0321s; animation-delay: 9.29723s;"></div></div>
+    
+    <!-- SPLASH SCREEN -->
+    <div id="splashScreen" class="screen visible">
+        <div class="min-h-screen flex flex-col items-center px-4">
+            <!-- Video Section -->
+            <div class="video-container w-full mt-4 mb-8">
+                <div class="video-border">
+                    <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                        <video id="hawkviewVideo" class="absolute top-0 left-0 w-full h-full object-cover" style="border-radius: 16px;" autoplay="" muted="" loop="" playsinline="" webkit-playsinline="" preload="metadata">
+                            <source src="hawkview_logo.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Title Section -->
+            <div class="text-center mb-8">
+                <h1 class="title-shimmer title-size font-black tracking-wider mb-4">HAWKVIEW</h1>
+                <p class="subtitle-size font-normal tracking-wide">Revolutionary AI Shopping Assistant</p>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="features-container">
+                <div class="w-full max-w-4xl feature-grid grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="feature-card rounded-2xl text-center">
+                        <div class="text-3xl mb-3"><i class="fas fa-brain text-yellow-400"></i></div>
+                        <h3 class="font-bold">AI-Powered Intelligence</h3>
+                        <p>Advanced machine learning algorithms that understand your shopping preferences with unprecedented accuracy.</p>
+                    </div>
+                    
+                    <div class="feature-card rounded-2xl text-center">
+                        <div class="text-3xl mb-3"><i class="fas fa-search text-yellow-400"></i></div>
+                        <h3 class="font-bold">Smart Product Discovery</h3>
+                        <p>Instantly find the best deals across thousands of retailers with our intelligent search engine.</p>
+                    </div>
+                    
+                    <div class="feature-card rounded-2xl text-center">
+                        <div class="text-3xl mb-3"><i class="fas fa-star text-yellow-400"></i></div>
+                        <h3 class="font-bold">Premium Experience</h3>
+                        <p>Enjoy a seamless, luxury shopping experience with real-time price tracking and exclusive deals.</p>
+                    </div>
+                    
+                    <div class="feature-card rounded-2xl text-center">
+                        <div class="text-3xl mb-3"><i class="fas fa-bolt text-yellow-400"></i></div>
+                        <h3 class="font-bold">Lightning Performance</h3>
+                        <p>Get instant results with our optimized algorithms and cloud-based infrastructure.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Install Button -->
+            <div class="install-button-container">
+                <button id="installBtn" class="install-btn" onclick="installHawkview()">
+                    <i class="fas fa-download mr-2"></i>Install HAWKVIEW
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="authScreen" class="screen hidden">
+        <div class="min-h-screen flex flex-col items-center justify-center px-4">
+            <!-- Animated Logo -->
+            <div class="video-container w-full max-w-sm mb-8">
+                <div class="video-border">
+                    <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                        <video class="absolute top-0 left-0 w-full h-full object-cover" style="border-radius: 16px;" autoplay="" muted="" loop="" playsinline="" webkit-playsinline="">
+                            <source src="hawkview_logo.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Title -->
+            <div class="text-center mb-8">
+                <h1 class="title-shimmer text-4xl font-black tracking-wider mb-4">HAWKVIEW</h1>
+                <p class="text-lg font-normal text-yellow-300 tracking-wide">Welcome to Your Shopping Revolution</p>
+            </div>
+            
+            <!-- Auth Options -->
+            <div id="authOptions" class="w-full max-w-md space-y-4">
+                <button onclick="guestAccess()" class="auth-btn w-full py-4 px-8 rounded-full font-bold text-lg">
+                    <i class="fas fa-user mr-2"></i>Continue as Guest
+                </button>
+                <button onclick="showSignUp()" class="auth-btn-outline w-full py-4 px-8 rounded-full font-bold text-lg">
+                    <i class="fas fa-user-plus mr-2"></i>Create Account
+                </button>
+                <button onclick="showSignIn()" class="auth-btn-outline w-full py-4 px-8 rounded-full font-bold text-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                </button>
+            </div>
+            
+            <!-- Sign Up Form -->
+            <div id="signUpForm" class="w-full max-w-md space-y-4 hidden">
+                <h3 class="text-xl font-bold text-center mb-6">Create Your Account</h3>
+                <input type="email" id="signUpEmail" class="form-input w-full" placeholder="Email Address" required="">
+                <input type="password" id="signUpPassword" class="form-input w-full" placeholder="Password" required="">
+                <input type="password" id="signUpConfirm" class="form-input w-full" placeholder="Confirm Password" required="">
+                <button onclick="handleSignUp()" class="auth-btn w-full py-3 px-6 rounded-full font-bold">
+                    <i class="fas fa-user-plus mr-2"></i>Create Account
+                </button>
+                <button onclick="backToAuth()" class="auth-btn-outline w-full py-3 px-6 rounded-full font-bold">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
+            
+            <!-- Sign In Form -->
+            <div id="signInForm" class="w-full max-w-md space-y-4 hidden">
+                <h3 class="text-xl font-bold text-center mb-6">Sign In</h3>
+                <input type="email" id="signInEmail" class="form-input w-full" placeholder="Email Address" required="">
+                <input type="password" id="signInPassword" class="form-input w-full" placeholder="Password" required="">
+                <div class="flex items-center">
+                    <input type="checkbox" id="rememberMe" class="mr-2">
+                    <label for="rememberMe" class="text-sm">Remember Me</label>
+                </div>
+                <button onclick="handleSignIn()" class="auth-btn w-full py-3 px-6 rounded-full font-bold">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                </button>
+                <button onclick="backToAuth()" class="auth-btn-outline w-full py-3 px-6 rounded-full font-bold">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MAIN APP SCREEN -->
+    <div id="mainAppScreen" class="screen hidden">
+        <div class="min-h-screen flex flex-col">
+            <!-- Top Bar -->
+            <div class="p-4 border-b border-yellow-400 border-opacity-30">
+                <div class="flex items-center justify-between">
+                    <h2 class="title-shimmer text-2xl font-bold">HAWKVIEW</h2>
+                    <button onclick="logout()" class="text-sm text-yellow-400 hover:text-yellow-300">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <div class="flex justify-center space-x-4 p-4">
+                <button class="nav-tab active" onclick="showTab(&#39;scan&#39;)">
+                    <i class="fas fa-camera mr-2"></i>Scan
+                </button>
+                <button class="nav-tab" onclick="showTab(&#39;profile&#39;)">
+                    <i class="fas fa-user mr-2"></i>Profile
+                </button>
+                <div id="adminTab" class="hidden">
+                    <button class="nav-tab" onclick="showTab(&#39;admin&#39;)">
+                        <i class="fas fa-cog mr-2"></i>Admin
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="flex-1 p-4">
+                <!-- Scan Tab -->
+                <div id="scanTab" class="tab-content">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-4">Product Scanner</h3>
+                        <p class="mb-6">Point your camera at any product to get instant information and pricing</p>
+                        
+                        <div class="border-2 border-dashed border-yellow-400 border-opacity-50 rounded-lg p-8 mb-6">
+                            <div class="text-6xl mb-4"><i class="fas fa-camera text-yellow-400"></i></div>
+                            <p class="mb-4">Camera access required for scanning</p>
+                            <button onclick="startCamera()" class="main-btn py-3 px-8 rounded-full font-bold">
+                                <i class="fas fa-camera mr-2"></i>Start Camera
+                            </button>
+                        </div>
+                        
+                        <div id="userFeatures" class="hidden">
+                            <h4 class="font-bold mb-2">Premium Features Available:</h4>
+                            <ul class="text-left space-y-2">
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i> Price comparison across retailers</li>
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i> Purchase history tracking</li>
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i> AI-powered recommendations</li>
+                                <li><i class="fas fa-check text-yellow-400 mr-2"></i> Advanced analytics</li>
+                            </ul>
+                        </div>
+                        
+                        <div id="guestLimitations" class="hidden">
+                            <div class="bg-yellow-900 bg-opacity-20 border border-yellow-400 rounded-lg p-4 mt-4">
+                                <h4 class="font-bold mb-2">Guest Limitations:</h4>
+                                <p class="text-sm">Basic scanning only. Create an account for full features!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Tab -->
+                <div id="profileTab" class="tab-content hidden">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-6">Profile Settings</h3>
+                        
+                        <div class="space-y-4 max-w-md mx-auto">
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4">
+                                <div class="text-left">
+                                    <p><strong>User Type:</strong> <span id="userTypeDisplay">Guest</span></p>
+                                    <p><strong>Email:</strong> <span id="emailDisplay">Not signed in</span></p>
+                                </div>
+                            </div>
+                            
+                            <div id="userOnlyFeatures" class="hidden space-y-4">
+                                <button class="auth-btn-outline w-full py-3 px-6 rounded-full font-bold">
+                                    <i class="fas fa-history mr-2"></i>Purchase History
+                                </button>
+                                <button class="auth-btn-outline w-full py-3 px-6 rounded-full font-bold">
+                                    <i class="fas fa-chart-bar mr-2"></i>Analytics
+                                </button>
+                                <button onclick="resetUserData()" class="auth-btn-outline w-full py-3 px-6 rounded-full font-bold text-red-400 border-red-400 hover:bg-red-400 hover:text-white">
+                                    <i class="fas fa-trash mr-2"></i>Reset Data
+                                </button>
+                            </div>
+                            
+                            <div id="guestOnlyMessage" class="bg-yellow-900 bg-opacity-20 border border-yellow-400 rounded-lg p-4">
+                                <p class="text-sm">Sign up to access advanced features and save your preferences!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Admin Tab -->
+                <div id="adminTabContent" class="tab-content hidden">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-6">Admin Panel</h3>
+                        
+                        <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4">
+                                <div class="text-2xl mb-2"><i class="fas fa-users text-yellow-400"></i></div>
+                                <div class="text-lg font-bold">Users</div>
+                                <div class="text-sm opacity-75">Manage accounts</div>
+                            </div>
+                            
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4">
+                                <div class="text-2xl mb-2"><i class="fas fa-chart-line text-yellow-400"></i></div>
+                                <div class="text-lg font-bold">Analytics</div>
+                                <div class="text-sm opacity-75">Usage statistics</div>
+                            </div>
+                            
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4">
+                                <div class="text-2xl mb-2"><i class="fas fa-cogs text-yellow-400"></i></div>
+                                <div class="text-lg font-bold">Settings</div>
+                                <div class="text-sm opacity-75">System config</div>
+                            </div>
+                            
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4">
+                                <div class="text-2xl mb-2"><i class="fas fa-tools text-yellow-400"></i></div>
+                                <div class="text-lg font-bold">Tools</div>
+                                <div class="text-sm opacity-75">Admin utilities</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let deferredPrompt;
+        let currentUser = null;
+        let userType = 'guest';
+        
+        // Screen Management
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('visible');
+                screen.classList.add('hidden');
+            });
+            
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById(screenId).classList.add('visible');
+        }
+        
+        // Particles Animation
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 60 : 100;
+            
+            particlesContainer.innerHTML = '';
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const sizeType = Math.random();
+                let size;
+                if (sizeType < 0.3) {
+                    size = Math.random() * 2 + 1;
+                } else if (sizeType < 0.7) {
+                    size = Math.random() * 3 + 2;
+                } else {
+                    size = Math.random() * 4 + 3;
+                }
+                
+                const startX = Math.random() * window.innerWidth;
+                const duration = Math.random() * 10 + 15;
+                const delay = Math.random() * 20;
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = startX + 'px';
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = delay + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // PWA Install Functionality
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+        
+        async function installHawkview() {
+            const btn = document.getElementById('installBtn');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Installing...';
+            
+            try {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    
+                    if (outcome === 'accepted') {
+                        showInstallSuccess();
+                    } else {
+                        showInstallInstructions();
+                    }
+                    deferredPrompt = null;
+                } else {
+                    showInstallInstructions();
+                }
+            } catch (error) {
+                console.log('Install error:', error);
+                showInstallInstructions();
+            }
+        }
+        
+        function showInstallSuccess() {
+            const btn = document.getElementById('installBtn');
+            const deviceType = getDeviceType();
+            
+            let instruction = '';
+            if (deviceType === 'iOS') {
+                instruction = 'Find HAWKVIEW on your Home Screen';
+            } else if (deviceType === 'Android') {
+                instruction = 'Find HAWKVIEW in your App Drawer';
+            } else {
+                instruction = 'Find HAWKVIEW in your Applications';
+            }
+            
+            btn.innerHTML = instruction;
+            
+            setTimeout(() => {
+                showScreen('authScreen');
+            }, 2000);
+        }
+        
+        function showInstallInstructions() {
+            const btn = document.getElementById('installBtn');
+            const deviceType = getDeviceType();
+            
+            let instruction = '';
+            if (deviceType === 'iOS') {
+                instruction = 'Find HAWKVIEW on your Home Screen';
+            } else if (deviceType === 'Android') {
+                instruction = 'Find HAWKVIEW in your App Drawer';
+            } else {
+                instruction = 'Find HAWKVIEW in your Applications';
+            }
+            
+            btn.innerHTML = instruction;
+            
+            setTimeout(() => {
+                showScreen('authScreen');
+            }, 3000);
+        }
+        
+        function getDeviceType() {
+            const userAgent = navigator.userAgent;
+            if (/iPad|iPhone|iPod/.test(userAgent)) return 'iOS';
+            if (/Android/.test(userAgent)) return 'Android';
+            return 'Desktop';
+        }
+        
+        // Authentication Functions
+        function guestAccess() {
+            userType = 'guest';
+            currentUser = { email: 'Guest User', type: 'guest' };
+            showMainApp();
+        }
+        
+        function showSignUp() {
+            document.getElementById('authOptions').classList.add('hidden');
+            document.getElementById('signUpForm').classList.remove('hidden');
+        }
+        
+        function showSignIn() {
+            document.getElementById('authOptions').classList.add('hidden');
+            document.getElementById('signInForm').classList.remove('hidden');
+        }
+        
+        function backToAuth() {
+            document.getElementById('authOptions').classList.remove('hidden');
+            document.getElementById('signUpForm').classList.add('hidden');
+            document.getElementById('signInForm').classList.add('hidden');
+        }
+        
+        function handleSignUp() {
+            const email = document.getElementById('signUpEmail').value;
+            const password = document.getElementById('signUpPassword').value;
+            const confirm = document.getElementById('signUpConfirm').value;
+            
+            if (!email || !password || !confirm) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            if (password !== confirm) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+            
+            // Save user data
+            const userData = { email, password, type: 'user' };
+            localStorage.setItem('hawkview_user_' + email, JSON.stringify(userData));
+            
+            userType = 'user';
+            currentUser = userData;
+            showMainApp();
+        }
+        
+        function handleSignIn() {
+            const email = document.getElementById('signInEmail').value;
+            const password = document.getElementById('signInPassword').value;
+            const remember = document.getElementById('rememberMe').checked;
+            
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Check admin credentials
+            if (email === 'admin@hawkview.com' && password === 'hawkview2025') {
+                userType = 'admin';
+                currentUser = { email, type: 'admin' };
+                showMainApp();
+                return;
+            }
+            
+            // Check regular user credentials
+            const storedUser = localStorage.getItem('hawkview_user_' + email);
+            if (storedUser) {
+                const userData = JSON.parse(storedUser);
+                if (userData.password === password) {
+                    userType = 'user';
+                    currentUser = userData;
+                    if (remember) {
+                        localStorage.setItem('hawkview_remember', email);
+                    }
+                    showMainApp();
+                    return;
+                }
+            }
+            
+            alert('Invalid email or password');
+        }
+        
+        function showMainApp() {
+            showScreen('mainAppScreen');
+            updateUserInterface();
+        }
+        
+        function updateUserInterface() {
+            document.getElementById('userTypeDisplay').textContent = 
+                userType === 'guest' ? 'Guest' :
+                userType === 'admin' ? 'Administrator' : 'Registered User';
+            
+            document.getElementById('emailDisplay').textContent = currentUser.email;
+            
+            if (userType === 'user') {
+                document.getElementById('userFeatures').classList.remove('hidden');
+                document.getElementById('userOnlyFeatures').classList.remove('hidden');
+                document.getElementById('guestLimitations').classList.add('hidden');
+                document.getElementById('guestOnlyMessage').classList.add('hidden');
+            } else if (userType === 'admin') {
+                document.getElementById('userFeatures').classList.remove('hidden');
+                document.getElementById('userOnlyFeatures').classList.remove('hidden');
+                document.getElementById('adminTab').classList.remove('hidden');
+                document.getElementById('guestLimitations').classList.add('hidden');
+                document.getElementById('guestOnlyMessage').classList.add('hidden');
+            } else {
+                document.getElementById('guestLimitations').classList.remove('hidden');
+                document.getElementById('guestOnlyMessage').classList.remove('hidden');
+                document.getElementById('userFeatures').classList.add('hidden');
+                document.getElementById('userOnlyFeatures').classList.add('hidden');
+            }
+        }
+        
+        // Tab Management
+        function showTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            if (tabName === 'admin') {
+                document.getElementById('adminTabContent').classList.remove('hidden');
+            } else {
+                document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            }
+        }
+        
+        // App Functions
+        function startCamera() {
+            alert('Camera functionality would be implemented here. This would access the device camera for product scanning.');
+        }
+        
+        function resetUserData() {
+            if (confirm('Are you sure you want to reset all your data? This cannot be undone.')) {
+                if (currentUser && currentUser.email !== 'Guest User') {
+                    localStorage.removeItem('hawkview_user_' + currentUser.email);
+                }
+                alert('Data reset successfully!');
+                logout();
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('hawkview_remember');
+            currentUser = null;
+            userType = 'guest';
+            showScreen('splashScreen');
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Check for remembered user
+            const remembered = localStorage.getItem('hawkview_remember');
+            if (remembered) {
+                const storedUser = localStorage.getItem('hawkview_user_' + remembered);
+                if (storedUser) {
+                    currentUser = JSON.parse(storedUser);
+                    userType = 'user';
+                    showMainApp();
+                    return;
+                }
+            }
+        });
+        
+        window.addEventListener('resize', () => {
+            createParticles();
+        });
+    </script>
+<script defer="" src="./HAWKVIEW - Revolutionary AI Shopping Assistant_files/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;96383bb47acfd729&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.7.0&quot;,&quot;token&quot;:&quot;4edd5f8ec12a48cfa682ab8261b80a79&quot;}" crossorigin="anonymous"></script>
+
+
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDtPYXkitBKpwSEQEggAuaY8M26Te8KwGiBX8kr8fy%2BdamqUZc13ZB1ODNQ3x5EAi%2BElooorbwsixB2sQ1CNDgQjCjshya8hpkTX2IOIvmk9aJrOSuN7EkJ2YzVNey%2BxG%2FWsxnHoOtxmt2RGBTYLo6yuilqTRQliDVxcwOhhoe5ADRCs%2FXcQ8A3tTDwXTGqJtd%2F9lX5mP0Q%2FDSHq5WSF6kiOlt3%2FMjT1g2g4LaDr%2FGHJ6D0s4eJZ0%2BBVm1AZybDOEy116CJNMH0pSq1lbMb7SBZGUXW2w3pPo3LbVwdg807u%2BZJX4MWx6O7mCQgnTs8nKR1TPz4wIA26osYHTs4SoCjmFbAvJRpAvyzSBDPpLvPp2WG0mDSJHGaSX4VcNVeWol%2FXPJJCPl6vAOcrWhm8xg6KjoR%2B8bXwnDh6bDHOBUy%2FzJrfceEDEO1IujKoY7wn%2FrDTjsCP0p9XXZzM2FR8tb3NywSe5lWjOoxz64qQ1x5oRKUyZhj3r1M01MFsGFDLTeA%3D%3D";
+        window.__genspark_locale = "en-US";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDtPYXkitBKpwSEQEggAuaY8M26Te8KwGiBX8kr8fy+damqUZc13ZB1ODNQ3x5EAi+ElooorbwsixB2sQ1CNDgQjCjshya8hpkTX2IOIvmk9aJrOSuN7EkJ2YzVNey+xG/WsxnHoOtxmt2RGBTYLo6yuilqTRQliDVxcwOhhoe5ADRCs/XcQ8A3tTDwXTGqJtd/9lX5mP0Q/DSHq5WSF6kiOlt3/MjT1g2g4LaDr/GHJ6D0s4eJZ0+BVm1AZybDOEy116CJNMH0pSq1lbMb7SBZGUXW2w3pPo3LbVwdg807u+ZJX4MWx6O7mCQgnTs8nKR1TPz4wIA26osYHTs4SoCjmFbAvJRpAvyzSBDPpLvPp2WG0mDSJHGaSX4VcNVeWol/XPJJCPl6vAOcrWhm8xg6KjoR+8bXwnDh6bDHOBUy/zJrfceEDEO1IujKoY7wn/rDTjsCP0p9XXZzM2FR8tb3NywSe5lWjOoxz64qQ1x5oRKUyZhj3r1M01MFsGFDLTeA==";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="./HAWKVIEW - Revolutionary AI Shopping Assistant_files/notice_dialog.js.download"></script>
+    </body></html>
