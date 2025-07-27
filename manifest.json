@@ -1,0 +1,22 @@
+{
+    "name": "HAWKVIEW",
+    "short_name": "HAWKVIEW",
+    "description": "Revolutionary AI Shopping Assistant. Find the best deals across thousands of retailers.",
+    "start_url": "/hawkview-app/",
+    "scope": "/hawkview-app/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#F0C55F",
+    "icons": [
+      {
+        "src": "HAWKVIEW_LOGO.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "HAWKVIEW_LOGO.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
