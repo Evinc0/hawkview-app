@@ -98,42 +98,7 @@
             opacity: 1;
             pointer-events: all;
         }
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0; /* Above background, below content */
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            /* --- PARTICLES USE EMERALD/GOLD --- */
-            background: radial-gradient(circle, #F0C55F, #00C896);
-            border-radius: 50%;
-            opacity: 0.3; /* Slightly less opaque */
-            animation: floatEnhanced 25s infinite linear; /* Slower, smoother */
-        }
-        @keyframes floatEnhanced {
-            0% {
-                transform: translateY(100vh) translateX(0px) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            50% {
-                transform: translateY(50vh) translateX(20px) rotate(180deg);
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100px) translateX(-20px) rotate(360deg);
-                opacity: 0;
-            }
-        }
+
         /* --- ENHANCED VIDEO BORDER WITH EMERALD/GOLD GRADIENT --- */
         .video-border {
             background: linear-gradient(45deg, #F0C55F, #00C896, #F0C55F, #00BFA5);
@@ -932,12 +897,10 @@
 </head>
 <body>
     <!-- NEW: Blurred Video Background -->
-    <video autoplay muted loop id="background-video" playsinline>
+    <video autoplay muted loop playsinline id="background-video">
         <source src="hawkview_background_blurred.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-
-    <div class="particles" id="particles"></div>
 
     <!-- This container holds both splash screens -->
     <div id="splashContainer" class="screen visible">
@@ -1108,7 +1071,7 @@
 
                         <div id="searchResultsArea">
                             <!-- Results will be dynamically inserted here -->
-                            <div class="loading-placeholder ui-font hidden" id="initialPlaceholder">
+                            <div class="loading-placeholder ui-font" id="initialPlaceholder">
                                 <i class="fas fa-binoculars"></i>
                                 <p>Enter a product name above to start your search.</p>
                                 <p class="text-sm text-gray-400 mt-2">Our AI will scan thousands of stores to find you the absolute best price.</p>
@@ -1216,13 +1179,10 @@
         const installBtn = document.getElementById('installBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredInstallPrompt = e;
-            // Update UI to notify the user they can install the PWA
             if (installBtn) {
-                installBtn.style.display = 'block'; // Or 'inline-block'
+                installBtn.style.display = 'block';
             }
         });
 
@@ -1245,7 +1205,6 @@
                 this.Admin.init();
                 this.PurchaseHistory.init();
                 this.Analytics.init();
-                this.createParticles();
                 this.checkStartupScreen();
                 console.log("HAWKVIEW Core Initialized.");
             },
@@ -1254,57 +1213,47 @@
                      const storedStores = localStorage.getItem('hawkview_configured_stores');
                      if (storedStores) {
                          this.state.configuredStores = JSON.parse(storedStores);
-                         console.log("Loaded configured stores:", this.state.configuredStores);
                      } else {
-                         // Provide a default/mock list if none are stored
                          this.state.configuredStores = [
                              { id: 'tg1', name: "TechGadgets", baseUrl: "https://techgadgets.com", affiliateTemplate: "https://techgadgets.com?ref=hawk123&pid={PID}" },
                              { id: 'gw2', name: "GadgetWorld", baseUrl: "https://gadgetworld.com", affiliateTemplate: "https://gadgetworld.com?ref=hawk456&item={ITEM_ID}" }
                          ];
-                         this.saveConfiguredStores(); // Save the default list
+                         this.saveConfiguredStores();
                      }
                  } catch (e) {
                      console.error("Failed to load stores, using default mock list.", e);
-                     this.state.configuredStores = [
-                         { id: 'tg1', name: "TechGadgets", baseUrl: "https://techgadgets.com", affiliateTemplate: "https://techgadgets.com?ref=hawk123&pid={PID}" },
-                         { id: 'gw2', name: "GadgetWorld", baseUrl: "https://gadgetworld.com", affiliateTemplate: "https://gadgetworld.com?ref=hawk456&item={ITEM_ID}" }
-                     ];
+                     this.state.configuredStores = [];
                  }
                  this.Admin.updateStoresListUI();
             },
             saveConfiguredStores: function() {
                  try {
                      localStorage.setItem('hawkview_configured_stores', JSON.stringify(this.state.configuredStores));
-                     console.log("Saved configured stores to localStorage.");
                      this.Admin.updateStoresListUI();
                  } catch (e) {
                      console.error("Failed to save stores to localStorage.", e);
-                     alert("Failed to save store configuration. Changes might be lost.");
                  }
             },
             addConfiguredStore: function(storeData) {
                  if (!storeData.name || !storeData.baseUrl || !storeData.affiliateTemplate) {
-                     alert("Please fill in all store details: Name, Base URL, and Affiliate Link Template.");
+                     alert("Please fill in all store details.");
                      return false;
                  }
-                 const newId = 'store_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-                 const newStore = { id: newId, ...storeData };
-                 this.state.configuredStores.push(newStore);
+                 const newId = 'store_' + Date.now();
+                 this.state.configuredStores.push({ id: newId, ...storeData });
                  this.saveConfiguredStores();
                  return true;
             },
-
             showScreen: function(screenId) {
                 document.querySelectorAll('.screen').forEach(screen => {
-                    screen.classList.remove('visible');
-                    screen.classList.add('hidden');
+                    screen.classList.remove('visible', 'hidden');
+                    if (screen.id === screenId) {
+                        screen.classList.add('visible');
+                    } else {
+                        screen.classList.add('hidden');
+                    }
                 });
-                const targetScreen = document.getElementById(screenId);
-                if (targetScreen) {
-                    targetScreen.classList.remove('hidden');
-                    targetScreen.classList.add('visible');
-                    this.state.currentScreen = screenId;
-                }
+                this.state.currentScreen = screenId;
             },
             showTab: function(tabName) {
                 document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
@@ -1313,33 +1262,6 @@
                 document.querySelector(`.nav-tab[data-tab="${tabName}"]`)?.classList.add('active');
                 document.getElementById(tabName + 'Tab')?.classList.remove('hidden');
                 this.state.currentTab = tabName;
-            },
-            createParticles: function() {
-                 const particlesContainer = document.getElementById('particles');
-                 const particleCount = window.innerWidth < 768 ? 60 : 100;
-                 particlesContainer.innerHTML = '';
-                 for (let i = 0; i < particleCount; i++) {
-                     const particle = document.createElement('div');
-                     particle.className = 'particle';
-                     const sizeType = Math.random();
-                     let size;
-                     if (sizeType < 0.3) {
-                         size = Math.random() * 2 + 1;
-                     } else if (sizeType < 0.7) {
-                         size = Math.random() * 3 + 2;
-                     } else {
-                         size = Math.random() * 4 + 3;
-                     }
-                     const startX = Math.random() * window.innerWidth;
-                     const duration = Math.random() * 10 + 15;
-                     const delay = Math.random() * 20;
-                     particle.style.width = size + 'px';
-                     particle.style.height = size + 'px';
-                     particle.style.left = startX + 'px';
-                     particle.style.animationDuration = duration + 's';
-                     particle.style.animationDelay = delay + 's';
-                     particlesContainer.appendChild(particle);
-                 }
             },
             checkStartupScreen: function() {
                  const remembered = localStorage.getItem('hawkview_remember');
@@ -1350,18 +1272,14 @@
                      if (remembered) {
                          const storedUser = localStorage.getItem('hawkview_user_' + remembered);
                          if (storedUser) {
-                             this.state.currentUser = JSON.parse(storedUser);
-                             this.state.userType = this.state.currentUser.type || 'user';
-                             this.showScreen('mainAppScreen');
-                             this.UI.updateUserInterface();
+                             this.Auth.performLogin(JSON.parse(storedUser));
                              return;
                          }
                      }
                      this.showScreen('authScreen');
-                     return;
+                 } else {
+                    this.showScreen('splashContainer');
                  }
-                 // In browser mode, the splashContainer is visible by default. CSS handles the rest.
-                 console.log("App is running in browser mode.");
             },
 
             // --- USER INTERFACE CONTROLLER ---
@@ -1372,8 +1290,7 @@
                     installBtn?.addEventListener('click', async () => {
                         if (deferredInstallPrompt) {
                             deferredInstallPrompt.prompt();
-                            const { outcome } = await deferredInstallPrompt.userChoice;
-                            console.log(`User response to the install prompt: ${outcome}`);
+                            await deferredInstallPrompt.userChoice;
                             deferredInstallPrompt = null;
                         } else {
                             HAWKVIEW.UI.showInstallModal();
@@ -1391,8 +1308,7 @@
 
                     document.querySelectorAll('.nav-tab').forEach(tab => {
                         tab.addEventListener('click', (e) => {
-                            const tabName = e.currentTarget.getAttribute('data-tab');
-                            HAWKVIEW.showTab(tabName);
+                            HAWKVIEW.showTab(e.currentTarget.dataset.tab);
                         });
                     });
 
@@ -1404,148 +1320,115 @@
                     document.getElementById('addStoreBtn')?.addEventListener('click', HAWKVIEW.Admin.handleAddStoreForm);
 
                     document.getElementById('performSearchBtn')?.addEventListener('click', HAWKVIEW.Search.perform);
-                    document.getElementById('productSearchInput')?.addEventListener('keypress', function(e) {
-                         if (e.key === 'Enter') {
-                             HAWKVIEW.Search.perform();
-                         }
+                    document.getElementById('productSearchInput')?.addEventListener('keypress', (e) => {
+                         if (e.key === 'Enter') HAWKVIEW.Search.perform();
                     });
-                    document.getElementById('initialPlaceholder')?.classList.remove('hidden');
                 },
                 showInstallModal: function() {
-                     const existingModal = document.querySelector('.install-modal');
-                     if (existingModal) return;
+                     if (document.querySelector('.install-modal')) return;
 
                      const installModal = document.createElement('div');
                      installModal.className = 'install-modal';
                      const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream;
-                     const isAndroid = /Android/.test(navigator.userAgent);
-                     let instructions = '';
-                     if (isIOS) {
-                         instructions = 'Tap the Share button <span style="font-size: 20px;">⬆️</span> then "Add to Home Screen" <span style="font-size: 20px;">➕</span>';
-                     } else if (isAndroid) {
-                         instructions = 'Tap the menu button <span style="font-size: 20px;">⋮</span> then "Add to Home Screen" or "Install App"';
-                     } else {
-                         instructions = 'Use your browser\'s menu to "Add to Home Screen" or "Install App"';
-                     }
+                     let instructions = isIOS
+                         ? 'Tap the Share button <span style="font-size: 20px;">⬆️</span> then "Add to Home Screen" <span style="font-size: 20px;">➕</span>'
+                         : 'Tap the menu button <span style="font-size: 20px;">⋮</span> then "Add to Home Screen" or "Install App"';
+
                      installModal.innerHTML = `
                          <div class="install-content">
                              <h3 class="ui-font">Install HAWKVIEW</h3>
                              <p class="ui-font">${instructions}</p>
-                             <p class="ui-font" style="font-size: 0.9rem; color: #F0C55F; margin-bottom: 25px;">
-                                 Once installed, HAWKVIEW will open in fullscreen mode.
-                             </p>
-                             <button class="continue-btn ui-font" onclick="this.closest('.install-modal').remove()">
-                                 Continue
-                             </button>
+                             <button class="continue-btn ui-font" onclick="this.closest('.install-modal').remove()">OK</button>
                          </div>
                      `;
                      document.body.appendChild(installModal);
                 },
-                showSignUpForm: function() {
-                    document.getElementById('authOptions').classList.add('hidden');
-                    document.getElementById('signUpForm').classList.remove('hidden');
-                },
-                showSignInForm: function() {
-                    document.getElementById('authOptions').classList.add('hidden');
-                    document.getElementById('signInForm').classList.remove('hidden');
-                },
-                backToAuthOptions: function() {
-                    document.getElementById('authOptions').classList.remove('hidden');
-                    document.getElementById('signUpForm').classList.add('hidden');
-                    document.getElementById('signInForm').classList.add('hidden');
+                showSignUpForm: () => HAWKVIEW.UI.toggleAuthForms('signUpForm'),
+                showSignInForm: () => HAWKVIEW.UI.toggleAuthForms('signInForm'),
+                backToAuthOptions: () => HAWKVIEW.UI.toggleAuthForms('authOptions'),
+                toggleAuthForms: (formToShow) => {
+                    ['authOptions', 'signUpForm', 'signInForm'].forEach(formId => {
+                        document.getElementById(formId).classList.toggle('hidden', formId !== formToShow);
+                    });
                 },
                 updateUserInterface: function() {
-                     const userTypeDisplay = document.getElementById('userTypeDisplay');
-                     const emailDisplay = document.getElementById('emailDisplay');
-                     if (userTypeDisplay) userTypeDisplay.textContent =
-                         HAWKVIEW.state.userType === 'guest' ? 'Guest' :
-                         HAWKVIEW.state.userType === 'admin' ? 'Administrator' : 'Registered User';
-                     if (emailDisplay) emailDisplay.textContent = HAWKVIEW.state.currentUser?.email || 'Not signed in';
+                     const userType = HAWKVIEW.state.userType;
+                     const email = HAWKVIEW.state.currentUser?.email;
 
-                     const isUser = HAWKVIEW.state.userType === 'user' || HAWKVIEW.state.userType === 'admin';
-                     const isAdmin = HAWKVIEW.state.userType === 'admin';
-                     const isGuest = HAWKVIEW.state.userType === 'guest';
+                     document.getElementById('userTypeDisplay').textContent = userType === 'admin' ? 'Administrator' : (userType === 'user' ? 'Registered User' : 'Guest');
+                     document.getElementById('emailDisplay').textContent = email || 'Not signed in';
 
-                     document.getElementById('userOnlyFeatures').style.display = isUser ? 'block' : 'none';
-                     document.getElementById('adminTabButton').style.display = isAdmin ? 'block' : 'none';
-                     document.getElementById('guestOnlyMessage').style.display = isGuest ? 'block' : 'none';
+                     const isUser = userType === 'user' || userType === 'admin';
+                     const isAdmin = userType === 'admin';
+                     const isGuest = userType === 'guest';
+
+                     document.getElementById('userOnlyFeatures').classList.toggle('hidden', !isUser);
+                     document.getElementById('adminTabButton').classList.toggle('hidden', !isAdmin);
+                     document.getElementById('guestOnlyMessage').classList.toggle('hidden', !isGuest);
                 }
             },
 
             Auth: {
-                init: function() { },
-                guestAccess: function() {
-                    HAWKVIEW.state.userType = 'guest';
-                    HAWKVIEW.state.currentUser = { email: 'Guest User', type: 'guest' };
+                performLogin: function(userData, remember = false) {
+                    HAWKVIEW.state.currentUser = userData;
+                    HAWKVIEW.state.userType = userData.type || 'user';
+                    if (remember) localStorage.setItem('hawkview_remember', userData.email);
                     HAWKVIEW.UI.updateUserInterface();
                     HAWKVIEW.showScreen('mainAppScreen');
+                },
+                guestAccess: function() {
+                    HAWKVIEW.Auth.performLogin({ email: 'Guest User', type: 'guest' });
                 },
                 handleSignUp: function() {
                      const email = document.getElementById('signUpEmail').value;
                      const password = document.getElementById('signUpPassword').value;
                      const confirm = document.getElementById('signUpConfirm').value;
-                     if (!email || !password || !confirm || !email.includes('@') || password !== confirm || password.length < 6) {
+                     if (!email || !password || !email.includes('@') || password !== confirm || password.length < 6) {
                          alert('Please check your details. Passwords must match and be at least 6 characters.');
                          return;
                      }
                      const userData = { email, password, type: 'user' };
                      try {
                          localStorage.setItem('hawkview_user_' + email, JSON.stringify(userData));
-                         HAWKVIEW.state.userType = 'user';
-                         HAWKVIEW.state.currentUser = userData;
-                         HAWKVIEW.UI.updateUserInterface();
-                         HAWKVIEW.showScreen('mainAppScreen');
+                         HAWKVIEW.Auth.performLogin(userData, document.getElementById('rememberMe').checked);
                      } catch (e) {
-                         alert('Failed to create account. Storage might be full.');
+                         alert('Failed to create account. Your browser storage might be full.');
                      }
                 },
                 handleSignIn: function() {
                      const email = document.getElementById('signInEmail').value;
                      const password = document.getElementById('signInPassword').value;
-                     const remember = document.getElementById('rememberMe').checked;
-                     if (!email || !password) {
-                         alert('Please fill in all fields');
-                         return;
-                     }
+                     if (!email || !password) return alert('Please fill in all fields.');
+
                      if (email === 'admin@hawkview.com' && password === 'hawkview2025') {
-                         HAWKVIEW.state.userType = 'admin';
-                         HAWKVIEW.state.currentUser = { email, type: 'admin' };
-                         HAWKVIEW.UI.updateUserInterface();
-                         HAWKVIEW.showScreen('mainAppScreen');
-                         return;
+                         return HAWKVIEW.Auth.performLogin({ email, type: 'admin' }, document.getElementById('rememberMe').checked);
                      }
                      const storedUser = localStorage.getItem('hawkview_user_' + email);
                      if (storedUser) {
                          const userData = JSON.parse(storedUser);
                          if (userData.password === password) {
-                             HAWKVIEW.state.userType = 'user';
-                             HAWKVIEW.state.currentUser = userData;
-                             if (remember) localStorage.setItem('hawkview_remember', email);
-                             else localStorage.removeItem('hawkview_remember');
-                             HAWKVIEW.UI.updateUserInterface();
-                             HAWKVIEW.showScreen('mainAppScreen');
-                             return;
+                             return HAWKVIEW.Auth.performLogin(userData, document.getElementById('rememberMe').checked);
                          }
                      }
-                     alert('Invalid email or password');
+                     alert('Invalid email or password.');
                 },
                 logout: function() {
                      localStorage.removeItem('hawkview_remember');
                      HAWKVIEW.state.currentUser = null;
                      HAWKVIEW.state.userType = 'guest';
                      HAWKVIEW.UI.updateUserInterface();
-                     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                     if (window.matchMedia('(display-mode: standalone)').matches) {
                          HAWKVIEW.showScreen('authScreen');
                      } else {
                          HAWKVIEW.showScreen('splashContainer');
                      }
                 },
                 resetUserData: function() {
-                     if (confirm('Are you sure you want to reset all your data? This cannot be undone.')) {
-                         if (HAWKVIEW.state.currentUser && HAWKVIEW.state.currentUser.email !== 'Guest User') {
-                             localStorage.removeItem('hawkview_user_' + HAWKVIEW.state.currentUser.email);
+                     if (confirm('This will remove your account from this device. Are you sure?')) {
+                         if (HAWKVIEW.state.currentUser) {
+                            localStorage.removeItem('hawkview_user_' + HAWKVIEW.state.currentUser.email);
                          }
-                         alert('User data reset successfully!');
+                         alert('User data has been reset.');
                          HAWKVIEW.Auth.logout();
                      }
                 }
@@ -1554,127 +1437,85 @@
             Search: {
                 perform: function() {
                     const searchTerm = document.getElementById('productSearchInput').value.trim();
-                    if (!searchTerm) {
-                        alert('Please enter a product to search.');
-                        return;
-                    }
+                    if (!searchTerm) return;
 
-                    document.getElementById('initialPlaceholder').classList.add('hidden');
-                    document.getElementById('searchResultsContainer').classList.add('hidden');
-                    document.getElementById('suggestedStoresSection').classList.add('hidden');
-                    document.getElementById('loadingIndicator').classList.remove('hidden');
+                    HAWKVIEW.UI.toggleSearchUI(false);
 
                     setTimeout(() => {
-                        document.getElementById('loadingIndicator').classList.add('hidden');
-                        document.getElementById('searchResultsContainer').classList.remove('hidden');
-
                         const mockResults = [];
-                        const configuredStores = HAWKVIEW.state.configuredStores;
-                        if (configuredStores.length === 0) {
-                             document.getElementById('searchResultsContainer').innerHTML = `<p class="ui-font text-center text-red-400 py-10">No stores are configured. Please add stores in the Admin panel.</p>`;
-                             return;
-                        }
-
-                        configuredStores.forEach((store, index) => {
+                        HAWKVIEW.state.configuredStores.forEach((store, index) => {
                              if (Math.random() > 0.3) {
-                                 const priceOffset = (Math.random() * 50) - 25;
-                                 const originalPrice = 1000 + (index * 50);
-                                 const finalPrice = originalPrice + priceOffset;
-                                 const discount = finalPrice < originalPrice ? `-${(((originalPrice - finalPrice) / originalPrice) * 100).toFixed(1)}%` : "";
-                                 const hasCoupon = Math.random() > 0.5;
-                                 const couponCode = hasCoupon ? `COUPON${Math.floor(Math.random() * 900) + 100}` : "";
-                                 const mockImageUrl = `https://picsum.photos/seed/${searchTerm.replace(/\s+/g, '')}${index}/300/200`;
-
+                                 const price = 1000 + (Math.random() * 50) - 25;
                                  mockResults.push({
-                                     storeId: store.id, storeName: store.name, storeIcon: "fas fa-store",
-                                     productName: searchTerm, productImageUrl: mockImageUrl,
-                                     price: parseFloat(finalPrice.toFixed(2)), originalPrice: parseFloat(originalPrice.toFixed(2)),
-                                     discount: discount, coupon: couponCode,
-                                     url: store.affiliateTemplate.replace(/{[^}]+}/g, 'PRODUCT_ID_123'),
-                                     confidence: `${(90 + Math.random() * 9).toFixed(1)}%`,
-                                     savings: `$${(originalPrice - finalPrice).toFixed(2)}`,
-                                     trend: index % 3 === 0 ? "Down 5%" : (index % 3 === 1 ? "Stable" : "Up 2%")
+                                     storeName: store.name, storeIcon: "fas fa-store",
+                                     productImageUrl: `https://picsum.photos/seed/${searchTerm.replace(/\s+/g, '')}${index}/300/200`,
+                                     price: price.toFixed(2),
+                                     originalPrice: (price * 1.2).toFixed(2),
+                                     coupon: Math.random() > 0.5 ? `SAVE${Math.floor(Math.random() * 20)}` : null,
+                                     url: store.affiliateTemplate,
                                  });
                              }
                         });
-
                         mockResults.sort((a, b) => a.price - b.price);
-
-                        if (mockResults.length === 0) {
-                             document.getElementById('searchResultsContainer').innerHTML = `<p class="ui-font text-center py-10">Sorry, no deals found for "${searchTerm}" in configured stores.</p>`;
-                             return;
-                        }
-
-                        let resultsHTML = `
-                            <div class="results-header">
-                                <div class="results-stats ui-font">Found ${mockResults.length} deals for "${searchTerm}"</div>
-                            </div>
-                        `;
-
-                        mockResults.forEach(result => {
-                             resultsHTML += `
-                                 <div class="result-card">
-                                     <div class="product-image-placeholder"><img src="${result.productImageUrl}" alt="${result.productName}"></div>
-                                     <div class="store-name ui-font"><i class="${result.storeIcon}"></i> ${result.storeName}</div>
-                                     <div class="price-container">
-                                         <span class="final-price ui-font">$${result.price.toFixed(2)}</span>
-                                         ${result.originalPrice > result.price ? `<span class="original-price ui-font">$${result.originalPrice.toFixed(2)}</span>` : ''}
-                                         ${result.discount ? `<span class="discount-badge ui-font">${result.discount}</span>` : ''}
-                                     </div>
-                                     <div class="coupon-section">
-                                         <div>${result.coupon ? `<span class="coupon-code ui-font">${result.coupon}</span>` : `<span class="ui-font text-gray-500">No coupon</span>`}</div>
-                                         <div class="action-buttons">
-                                             <a href="${result.url}" target="_blank" class="buy-btn ui-font"><i class="fas fa-shopping-cart"></i> Buy Now</a>
-                                             ${result.coupon ? `<button class="copy-btn ui-font copy-coupon-btn" data-coupon="${result.coupon}">Copy</button>` : ''}
-                                         </div>
-                                     </div>
-                                     <div class="ai-insights">
-                                         <h4 class="ui-font"><i class="fas fa-chart-line"></i> AI Insights</h4>
-                                         <div class="insight-item"><span class="insight-label ui-font">AI Confidence:</span><span class="ui-font">${result.confidence}</span></div>
-                                         <div class="insight-item"><span class="insight-label ui-font">Your Savings:</span><span class="ui-font text-green-500 font-bold">${result.savings}</span></div>
-                                         <div class="insight-item"><span class="insight-label ui-font">Price Trend:</span><span class="ui-font">${result.trend}</span></div>
-                                     </div>
-                                 </div>
-                             `;
-                        });
-
-                        document.getElementById('searchResultsContainer').innerHTML = resultsHTML;
-
-                        document.querySelectorAll('.copy-coupon-btn').forEach(btn => {
-                            btn.addEventListener('click', function() {
-                                const couponCode = this.dataset.coupon;
-                                navigator.clipboard.writeText(couponCode).then(() => {
-                                    this.textContent = 'Copied!';
-                                    setTimeout(() => { this.textContent = 'Copy'; }, 2000);
-                                });
-                            });
-                        });
+                        HAWKVIEW.UI.renderSearchResults(mockResults, searchTerm);
+                        HAWKVIEW.UI.toggleSearchUI(true);
                     }, 1500);
                 }
             },
-
-            PurchaseHistory: {
-                init: function() { },
-                show: function() { alert("Purchase History Coming Soon!"); }
-            },
-
-            Analytics: {
-                init: function() { },
-                show: function() { alert("Analytics Dashboard Coming Soon!"); }
-            },
-
-            Admin: {
-                init: function() { },
-                showManageStores: function() {
-                    document.getElementById('manageStoresPanel').classList.toggle('hidden');
+            
+            UI: {
+                ...this.UI, // Keep existing UI functions
+                toggleSearchUI: function(showResults) {
+                    document.getElementById('loadingIndicator').classList.toggle('hidden', showResults);
+                    document.getElementById('initialPlaceholder').classList.add('hidden');
+                    document.getElementById('searchResultsContainer').classList.toggle('hidden', !showResults);
                 },
+                renderSearchResults: function(results, searchTerm) {
+                    const container = document.getElementById('searchResultsContainer');
+                    if(results.length === 0) {
+                        container.innerHTML = `<p class="ui-font text-center py-10">No deals found for "${searchTerm}".</p>`;
+                        return;
+                    }
+                    container.innerHTML = `<div class="results-header"><div class="results-stats ui-font">Found ${results.length} deals for "${searchTerm}"</div></div>` +
+                    results.map(result => `
+                        <div class="result-card">
+                            <div class="product-image-placeholder"><img src="${result.productImageUrl}" alt="Product Image"></div>
+                            <div class="store-name ui-font"><i class="${result.storeIcon}"></i> ${result.storeName}</div>
+                            <div class="price-container">
+                                <span class="final-price ui-font">$${result.price}</span>
+                                <span class="original-price ui-font">$${result.originalPrice}</span>
+                            </div>
+                            <div class="coupon-section">
+                                <div>${result.coupon ? `<span class="coupon-code ui-font">${result.coupon}</span>` : `<span class="ui-font text-gray-500">No coupon</span>`}</div>
+                                <div class="action-buttons">
+                                    <a href="${result.url}" target="_blank" class="buy-btn ui-font"><i class="fas fa-shopping-cart"></i> Buy</a>
+                                    ${result.coupon ? `<button class="copy-btn ui-font copy-coupon-btn" data-coupon="${result.coupon}">Copy</button>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    container.querySelectorAll('.copy-coupon-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            navigator.clipboard.writeText(this.dataset.coupon);
+                            this.textContent = 'Copied!';
+                            setTimeout(() => this.textContent = 'Copy', 2000);
+                        });
+                    });
+                }
+            },
+
+            PurchaseHistory: { init: () => {}, show: () => alert("Purchase History Coming Soon!") },
+            Analytics: { init: () => {}, show: () => alert("Analytics Dashboard Coming Soon!") },
+            Admin: {
+                init: () => {},
+                showManageStores: () => document.getElementById('manageStoresPanel').classList.toggle('hidden'),
                 handleAddStoreForm: function() {
                     const storeData = {
                         name: document.getElementById('newStoreName').value.trim(),
                         baseUrl: document.getElementById('newStoreUrl').value.trim(),
                         affiliateTemplate: document.getElementById('newAffiliateLink').value.trim()
                     };
-
                     if (HAWKVIEW.addConfiguredStore(storeData)) {
                         alert(`Store "${storeData.name}" added!`);
                         document.getElementById('newStoreName').value = '';
@@ -1686,22 +1527,18 @@
                      const listEl = document.getElementById('storesList');
                      if (!listEl) return;
                      const stores = HAWKVIEW.state.configuredStores;
-                     if (stores.length === 0) {
-                         listEl.innerHTML = '<p class="ui-font text-center text-gray-500">No stores configured.</p>';
-                         return;
-                     }
-                     listEl.innerHTML = stores.map(store => `
-                         <div class="bg-gray-800 p-2 rounded text-sm ui-font flex justify-between items-center">
-                             <span>${store.name}</span>
-                             <button class="text-xs text-red-400 hover:text-red-300 remove-store-btn" data-storeid="${store.id}">Remove</button>
-                         </div>`).join('');
-                     document.querySelectorAll('.remove-store-btn').forEach(btn => {
+                     listEl.innerHTML = stores.length === 0
+                         ? '<p class="ui-font text-center text-gray-500">No stores configured.</p>'
+                         : stores.map(store => `
+                             <div class="bg-gray-800 p-2 rounded text-sm ui-font flex justify-between items-center">
+                                 <span>${store.name}</span>
+                                 <button class="text-xs text-red-400 hover:text-red-300 remove-store-btn" data-storeid="${store.id}">Remove</button>
+                             </div>`).join('');
+                     listEl.querySelectorAll('.remove-store-btn').forEach(btn => {
                          btn.addEventListener('click', function() {
-                             const storeId = this.dataset.storeid;
                              if (confirm(`Remove this store?`)) {
-                                 HAWKVIEW.state.configuredStores = HAWKVIEW.state.configuredStores.filter(s => s.id !== storeId);
+                                 HAWKVIEW.state.configuredStores = HAWKVIEW.state.configuredStores.filter(s => s.id !== this.dataset.storeid);
                                  HAWKVIEW.saveConfiguredStores();
-                                 alert('Store removed.');
                              }
                          });
                      });
@@ -1710,7 +1547,6 @@
         };
 
         window.addEventListener('load', () => HAWKVIEW.init());
-        window.addEventListener('resize', () => HAWKVIEW.createParticles());
     </script>
     <!-- --- CRITICAL FULLSCREEN ENHANCEMENT SCRIPT --- -->
     <script>
@@ -1722,8 +1558,6 @@
                 }
             }
             document.addEventListener('DOMContentLoaded', applyStandaloneFixes);
-            const mediaQuery = window.matchMedia('(display-mode: standalone)');
-            mediaQuery.addEventListener('change', (e) => { if (e.matches) applyStandaloneFixes(); });
         })();
     </script>
 </body>
