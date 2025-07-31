@@ -87,7 +87,7 @@
             width: 100%;
             min-height: 100%;
             transition: opacity 0.5s ease-in-out;
-            background: transparent;
+            background: transparent; /* Make screens transparent */
         }
         .screen.hidden {
             opacity: 0;
@@ -97,7 +97,7 @@
             opacity: 1;
             pointer-events: all;
         }
-
+        
         /* --- ENHANCED VIDEO BORDER WITH EMERALD/GOLD GRADIENT --- */
         .video-border {
             background: linear-gradient(45deg, #F0C55F, #00C896, #F0C55F, #00BFA5);
@@ -275,7 +275,6 @@
         .w-full.max-w-4xl {
             max-width: 600px !important;
         }
-
         /* --- NEW SEARCH STYLES (Enhanced with Emerald) --- */
         .app-header-video {
              width: 100%;
@@ -695,6 +694,7 @@
     </style>
 </head>
 <body>
+    <!-- NEW: Blurred Video Background -->
     <video autoplay muted loop playsinline id="background-video">
         <source src="hawkview_background_blurred.mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -719,20 +719,257 @@
 
         <!-- ORIGINAL MOBILE-FIRST SPLASH SCREEN -->
         <div id="mobileSplashScreen">
-            <!-- Mobile Splash Content Here -->
+            <div class="min-h-screen flex flex-col items-center px-4">
+                <div class="video-container w-full mt-4 mb-8">
+                    <div class="video-border">
+                        <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                            <video id="hawkviewVideo" class="absolute top-0 left-0 w-full h-full object-cover" style="border-radius: 16px;" autoplay muted loop playsinline webkit-playsinline preload="metadata">
+                                <source src="hawkview_logo.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-8">
+                    <h1 class="hawkview-title-main title-shimmer title-size font-black tracking-wider mb-4">HAWKVIEW</h1>
+                    <p class="hawkview-title-main subtitle-size font-normal tracking-wide">Revolutionary AI Shopping Assistant</p>
+                </div>
+                <div class="features-container">
+                    <div class="w-full max-w-4xl feature-grid grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="feature-card rounded-2xl text-center">
+                            <div class="text-3xl mb-3">🤖</div>
+                            <h3 class="ui-font font-bold">AI-Powered Intelligence</h3>
+                            <p class="ui-font">Advanced machine learning algorithms that understand your shopping preferences with unprecedented accuracy.</p>
+                        </div>
+                        <div class="feature-card rounded-2xl text-center">
+                            <div class="text-3xl mb-3">🔍</div>
+                            <h3 class="ui-font font-bold">Smart Product Discovery</h3>
+                            <p class="ui-font">Instantly find the best deals across thousands of retailers with our intelligent search engine.</p>
+                        </div>
+                        <div class="feature-card rounded-2xl text-center">
+                            <div class="text-3l mb-3">⭐</div>
+                            <h3 class="ui-font font-bold">Premium Experience</h3>
+                            <p class="ui-font">Enjoy a seamless, luxury shopping experience with real-time price tracking and exclusive deals.</p>
+                        </div>
+                        <div class="feature-card rounded-2xl text-center">
+                            <div class="text-3xl mb-3">⚡</div>
+                            <h3 class="ui-font font-bold">Lightning Performance</h3>
+                            <p class="ui-font">Get instant results with our optimized algorithms and cloud-based infrastructure.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full max-w-md mb-8">
+                    <button id="installBtn" class="install-btn ui-font w-full py-4 px-8 rounded-full text-lg tracking-wide" style="display: none;">
+                        <i class="fas fa-download mr-2"></i>Install HAWKVIEW
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="authScreen" class="screen hidden">
-        <!-- Auth Screen Content Here -->
+        <div class="min-h-screen flex flex-col items-center justify-center px-4">
+            <div class="video-container w-full mb-8">
+                <div class="video-border">
+                    <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                        <video class="absolute top-0 left-0 w-full h-full object-cover" style="border-radius: 16px;" autoplay muted loop playsinline webkit-playsinline>
+                            <source src="hawkview_logo.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mb-8">
+                <h1 class="hawkview-title-main title-shimmer text-4xl font-black tracking-wider mb-4">HAWKVIEW</h1>
+                <p class="ui-font text-lg font-normal text-yellow-300 tracking-wide">Welcome to Your Shopping Revolution</p>
+            </div>
+            <div id="authOptions" class="w-full max-w-md space-y-4">
+                <button id="guestAccessBtn" class="auth-btn ui-font w-full py-4 px-8 rounded-full text-lg">
+                    <i class="fas fa-user mr-2"></i>Continue as Guest
+                </button>
+                <button id="showSignUpBtn" class="auth-btn-outline ui-font w-full py-4 px-8 rounded-full text-lg">
+                    <i class="fas fa-user-plus mr-2"></i>Create Account
+                </button>
+                <button id="showSignInBtn" class="auth-btn-outline ui-font w-full py-4 px-8 rounded-full text-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                </button>
+            </div>
+            <div id="signUpForm" class="w-full max-w-md space-y-4 hidden">
+                <h3 class="ui-font text-xl font-bold text-center mb-6">Create Your Account</h3>
+                <input type="email" id="signUpEmail" class="form-input w-full" placeholder="Email Address" required>
+                <input type="password" id="signUpPassword" class="form-input w-full" placeholder="Password" required>
+                <input type="password" id="signUpConfirm" class="form-input w-full" placeholder="Confirm Password" required>
+                <button id="handleSignUpBtn" class="auth-btn ui-font w-full py-3 px-6 rounded-full">
+                    <i class="fas fa-user-plus mr-2"></i>Create Account
+                </button>
+                <button id="backToAuthFromSignUpBtn" class="auth-btn-outline ui-font w-full py-3 px-6 rounded-full">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
+            <div id="signInForm" class="w-full max-w-md space-y-4 hidden">
+                <h3 class="ui-font text-xl font-bold text-center mb-6">Sign In</h3>
+                <input type="email" id="signInEmail" class="form-input w-full" placeholder="Email Address" required>
+                <input type="password" id="signInPassword" class="form-input w-full" placeholder="Password" required>
+                <div class="flex items-center">
+                    <input type="checkbox" id="rememberMe" class="mr-2">
+                    <label for="rememberMe" class="ui-font text-sm">Remember Me</label>
+                </div>
+                <button id="handleSignInBtn" class="auth-btn ui-font w-full py-3 px-6 rounded-full">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                </button>
+                <button id="backToAuthFromSignInBtn" class="auth-btn-outline ui-font w-full py-3 px-6 rounded-full">
+                    <i class="fas fa-arrow-left mr-2"></i>Back
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- MAIN APP SCREEN -->
     <div id="mainAppScreen" class="screen hidden">
-        <!-- Main App Content Here -->
-    </div>
+        <div class="min-h-screen flex flex-col">
+            <!-- CONSISTENT HEADER WITH VIDEO -->
+            <div class="p-4 border-b border-yellow-400 border-opacity-30 flex flex-col items-center">
+                 <div class="app-header-video">
+                     <div class="video-border">
+                         <video class="w-full h-full object-cover" style="border-radius: 10px;" autoplay muted loop playsinline webkit-playsinline>
+                             <source src="hawkview_logo.mp4" type="video/mp4">
+                             Your browser does not support the video tag.
+                         </video>
+                     </div>
+                 </div>
+                 <button id="logoutBtn" class="ui-font text-xs text-yellow-400 hover:text-yellow-300 mt-2">
+                     <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                 </button>
+            </div>
+            <div class="flex justify-center space-x-2 p-2">
+                <button class="nav-tab ui-font active" data-tab="scan">
+                    <i class="fas fa-search mr-2"></i>Search
+                </button>
+                <button class="nav-tab ui-font" data-tab="profile">
+                    <i class="fas fa-user mr-2"></i>Profile
+                </button>
+                <div id="adminTabButton" class="hidden">
+                    <button class="nav-tab ui-font" data-tab="admin">
+                        <i class="fas fa-cog mr-2"></i>Admin
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 p-2 overflow-y-auto">
+                <!-- Search Tab (formerly Scan Tab) -->
+                <div id="scanTab" class="tab-content">
+                    <div class="search-container">
+                        <h3 class="ui-font text-xl font-bold mb-6 text-center">Find the Best Deals</h3>
+                        <div class="search-bar">
+                            <input type="text" id="productSearchInput" class="ui-font" placeholder="Enter product name or category...">
+                            <button id="performSearchBtn" class="ui-font"><i class="fas fa-search mr-2"></i>Search</button>
+                        </div>
+                        <div class="text-center mt-2">
+                            <span class="ai-badge ui-font"><i class="fas fa-brain"></i> AI-Powered Search</span>
+                        </div>
 
+                        <div id="searchResultsArea">
+                            <!-- Results will be dynamically inserted here -->
+                            <div class="loading-placeholder ui-font" id="initialPlaceholder">
+                                <i class="fas fa-binoculars"></i>
+                                <p>Enter a product name above to start your search.</p>
+                                <p class="text-sm text-gray-400 mt-2">Our AI will scan thousands of stores to find you the absolute best price.</p>
+                            </div>
+                            <div class="loading-placeholder ui-font hidden" id="loadingIndicator">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>AI is analyzing prices and testing coupons...</p>
+                                <p class="text-sm text-gray-400 mt-2">Ultra-Deep Price Comparison Engine Active</p>
+                            </div>
+                            <div id="searchResultsContainer" class="hidden">
+                                <!-- Search results go here -->
+                            </div>
+                            <!-- Admin Suggested Stores Section -->
+                            <div id="suggestedStoresSection" class="suggested-stores-section hidden">
+                                <h4 class="ui-font font-bold mb-4 text-center">Suggested Stores to Add</h4>
+                                <p class="ui-font text-sm text-gray-400 mb-4 text-center">These retailers also sell this item. Add them to expand your search.</p>
+                                <div id="suggestedStoresList" class="space-y-2">
+                                    <!-- Suggested stores will be dynamically inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Tab -->
+                <div id="profileTab" class="tab-content hidden">
+                    <div class="text-center p-4">
+                        <h3 class="ui-font text-xl font-bold mb-6">Profile Settings</h3>
+                        <div class="space-y-4 max-w-md mx-auto">
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4">
+                                <div class="text-left">
+                                    <p class="ui-font"><strong>User Type:</strong> <span id="userTypeDisplay">Guest</span></p>
+                                    <p class="ui-font"><strong>Email:</strong> <span id="emailDisplay">Not signed in</span></p>
+                                </div>
+                            </div>
+                            <div id="userOnlyFeatures" class="hidden space-y-4">
+                                <button id="purchaseHistoryBtn" class="auth-btn-outline ui-font w-full py-3 px-6 rounded-full font-bold">
+                                    <i class="fas fa-history mr-2"></i>Purchase History
+                                </button>
+                                <button id="analyticsBtn" class="auth-btn-outline ui-font w-full py-3 px-6 rounded-full font-bold">
+                                    <i class="fas fa-chart-bar mr-2"></i>Analytics
+                                </button>
+                                <button id="resetDataBtn" class="auth-btn-outline ui-font w-full py-3 px-6 rounded-full font-bold text-red-400 border-red-400 hover:bg-red-400 hover:text-white">
+                                    <i class="fas fa-trash mr-2"></i>Reset Data
+                                </button>
+                            </div>
+                            <div id="guestOnlyMessage" class="bg-yellow-900 bg-opacity-20 border border-yellow-400 rounded-lg p-4">
+                                <p class="ui-font text-sm">Sign up to access advanced features and save your preferences!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Tab -->
+                <div id="adminTab" class="tab-content hidden">
+                    <div class="text-center p-4">
+                        <h3 class="ui-font text-xl font-bold mb-6">Admin Panel</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4 cursor-pointer hover:bg-opacity-70" id="manageStoresCard">
+                                <div class="text-2xl mb-2">🏪</div>
+                                <div class="ui-font text-lg font-bold">Manage Stores</div>
+                                <div class="ui-font text-sm opacity-75">Add/Edit retailers & affiliates</div>
+                            </div>
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4 cursor-pointer hover:bg-opacity-70" id="manageUsersCard">
+                                <div class="text-2xl mb-2">👥</div>
+                                <div class="ui-font text-lg font-bold">Manage Users</div>
+                                <div class="ui-font text-sm opacity-75">View and manage accounts</div>
+                            </div>
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4 cursor-pointer hover:bg-opacity-70" id="viewAnalyticsCard">
+                                <div class="text-2xl mb-2">📊</div>
+                                <div class="ui-font text-lg font-bold">System Analytics</div>
+                                <div class="ui-font text-sm opacity-75">Usage statistics & reports</div>
+                            </div>
+                            <div class="bg-black bg-opacity-50 border border-yellow-400 border-opacity-30 rounded-lg p-4 cursor-pointer hover:bg-opacity-70" id="systemSettingsCard">
+                                <div class="text-2xl mb-2">⚙️</div>
+                                <div class="ui-font text-lg font-bold">System Settings</div>
+                                <div class="ui-font text-sm opacity-75">Configure app parameters</div>
+                            </div>
+                        </div>
+
+                        <div id="manageStoresPanel" class="hidden mt-6 text-left max-w-2xl mx-auto">
+                            <h4 class="ui-font font-bold mb-4 text-center">Add New Store</h4>
+                            <div class="space-y-4">
+                                <input type="text" id="newStoreName" class="form-input w-full" placeholder="Store Name" required>
+                                <input type="text" id="newStoreUrl" class="form-input w-full" placeholder="Store Base URL (e.g., https://example.com)" required>
+                                <input type="text" id="newAffiliateLink" class="form-input w-full" placeholder="Affiliate Link Template (e.g., https://example.com?ref=YOUR_ID&product={PRODUCT_ID})" required>
+                                <button id="addStoreBtn" class="auth-btn ui-font w-full py-2 px-4 rounded-full font-bold">
+                                    <i class="fas fa-plus mr-2"></i>Add Store
+                                </button>
+                            </div>
+                            <h4 class="ui-font font-bold mb-4 mt-6 text-center">Existing Stores</h4>
+                            <div id="storesList" class="space-y-2">
+                                <p class="ui-font text-center text-gray-500">No stores configured yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         // --- PWA INSTALL PROMPT HANDLING ---
         let deferredInstallPrompt = null;
@@ -740,24 +977,24 @@
             e.preventDefault();
             deferredInstallPrompt = e;
             const installBtn = document.getElementById('installBtn');
-            if (installBtn) {
-                installBtn.style.display = 'block';
-            }
+            if(installBtn) installBtn.style.display = 'block';
         });
 
-        // --- HAWKVIEW CORE APPLICATION LOGIC (Full Original Script) ---
+        // --- HAWKVIEW CORE APPLICATION LOGIC ---
         const HAWKVIEW = {
+            // --- STATE MANAGEMENT ---
             state: {
                 currentUser: null,
                 userType: 'guest',
                 currentScreen: 'splashContainer',
-                currentTab: 'scan',
+                currentTab: 'scan', // Default tab is now 'scan' (which is Search)
+                // Stores configuration - In a real app, this would come from the backend
                 configuredStores: []
             },
 
             init: function() {
                 console.log("Initializing HAWKVIEW Core...");
-                this.loadConfiguredStores();
+                this.loadConfiguredStores(); // Load stores on init
                 this.UI.init();
                 this.Auth.init();
                 this.Admin.init();
@@ -766,7 +1003,55 @@
                 this.checkStartupScreen();
                 console.log("HAWKVIEW Core Initialized.");
             },
-            
+            loadConfiguredStores: function() {
+                 try {
+                     const storedStores = localStorage.getItem('hawkview_configured_stores');
+                     if (storedStores) {
+                         this.state.configuredStores = JSON.parse(storedStores);
+                         console.log("Loaded configured stores:", this.state.configuredStores);
+                     } else {
+                         // Provide a default/mock list if none are stored
+                         this.state.configuredStores = [
+                             { id: 'tg1', name: "TechGadgets", baseUrl: "https://techgadgets.com", affiliateTemplate: "https://techgadgets.com?ref=hawk123&pid={PID}" },
+                             { id: 'gw2', name: "GadgetWorld", baseUrl: "https://gadgetworld.com", affiliateTemplate: "https://gadgetworld.com?ref=hawk456&item={ITEM_ID}" }
+                         ];
+                         this.saveConfiguredStores(); // Save the default list
+                     }
+                 } catch (e) {
+                     console.error("Failed to load stores, using default mock list.", e);
+                     this.state.configuredStores = [
+                         { id: 'tg1', name: "TechGadgets", baseUrl: "https://techgadgets.com", affiliateTemplate: "https://techgadgets.com?ref=hawk123&pid={PID}" },
+                         { id: 'gw2', name: "GadgetWorld", baseUrl: "https://gadgetworld.com", affiliateTemplate: "https://gadgetworld.com?ref=hawk456&item={ITEM_ID}" }
+                     ];
+                 }
+                 // Update Admin panel UI with loaded stores
+                 this.Admin.updateStoresListUI();
+            },
+            saveConfiguredStores: function() {
+                 try {
+                     localStorage.setItem('hawkview_configured_stores', JSON.stringify(this.state.configuredStores));
+                     console.log("Saved configured stores to localStorage.");
+                     // Update Admin panel UI after saving
+                     this.Admin.updateStoresListUI();
+                 } catch (e) {
+                     console.error("Failed to save stores to localStorage.", e);
+                     alert("Failed to save store configuration. Changes might be lost.");
+                 }
+            },
+            addConfiguredStore: function(storeData) {
+                 // Basic validation
+                 if (!storeData.name || !storeData.baseUrl || !storeData.affiliateTemplate) {
+                     alert("Please fill in all store details: Name, Base URL, and Affiliate Link Template.");
+                     return false;
+                 }
+                 // Simple ID generation (in a real app, backend should assign unique IDs)
+                 const newId = 'store_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+                 const newStore = { id: newId, ...storeData };
+                 this.state.configuredStores.push(newStore);
+                 this.saveConfiguredStores();
+                 return true;
+            },
+
             showScreen: function(screenId) {
                 document.querySelectorAll('.screen').forEach(screen => {
                     screen.classList.remove('visible');
@@ -779,10 +1064,39 @@
                     this.state.currentScreen = screenId;
                 }
             },
+            showTab: function(tabName) {
+                document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
 
-            // ... (All other original JS functions from your first code block would go here)
-            // For brevity, I'll only include the UI.init to show the button listener
-            
+                document.querySelector(`.nav-tab[data-tab="${tabName}"]`)?.classList.add('active');
+                document.getElementById(tabName + 'Tab')?.classList.remove('hidden');
+                this.state.currentTab = tabName;
+            },
+            checkStartupScreen: function() {
+                 const remembered = localStorage.getItem('hawkview_remember');
+                 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+                 if (isStandalone) {
+                     console.log("App is running in standalone mode.");
+                     if (remembered) {
+                         const storedUser = localStorage.getItem('hawkview_user_' + remembered);
+                         if (storedUser) {
+                             this.state.currentUser = JSON.parse(storedUser);
+                             this.state.userType = this.state.currentUser.type || 'user';
+                             this.showScreen('mainAppScreen');
+                             this.UI.updateUserInterface();
+                             return;
+                         }
+                     }
+                     this.showScreen('authScreen');
+                     return;
+                 }
+
+                 console.log("App is running in browser mode.");
+                 this.showScreen('splashContainer');
+            },
+
+            // --- USER INTERFACE CONTROLLER ---
             UI: {
                 init: function() {
                     // --- DESKTOP SPLASH BUTTON LISTENER ---
@@ -800,33 +1114,393 @@
                         }
                     });
 
-                    // --- ALL YOUR OTHER ORIGINAL EVENT LISTENERS ---
                     document.getElementById('guestAccessBtn')?.addEventListener('click', HAWKVIEW.Auth.guestAccess);
                     document.getElementById('showSignUpBtn')?.addEventListener('click', HAWKVIEW.UI.showSignUpForm);
                     document.getElementById('showSignInBtn')?.addEventListener('click', HAWKVIEW.UI.showSignInForm);
-                    // ...and so on for every button.
+                    document.getElementById('backToAuthFromSignUpBtn')?.addEventListener('click', HAWKVIEW.UI.backToAuthOptions);
+                    document.getElementById('backToAuthFromSignInBtn')?.addEventListener('click', HAWKVIEW.UI.backToAuthOptions);
+                    document.getElementById('handleSignUpBtn')?.addEventListener('click', HAWKVIEW.Auth.handleSignUp);
+                    document.getElementById('handleSignInBtn')?.addEventListener('click', HAWKVIEW.Auth.handleSignIn);
+                    document.getElementById('logoutBtn')?.addEventListener('click', HAWKVIEW.Auth.logout);
+
+                    document.querySelectorAll('.nav-tab').forEach(tab => {
+                        tab.addEventListener('click', (e) => {
+                            const tabName = e.currentTarget.getAttribute('data-tab');
+                            HAWKVIEW.showTab(tabName);
+                        });
+                    });
+
+                    document.getElementById('resetDataBtn')?.addEventListener('click', HAWKVIEW.Auth.resetUserData);
+                    document.getElementById('purchaseHistoryBtn')?.addEventListener('click', HAWKVIEW.PurchaseHistory.show);
+                    document.getElementById('analyticsBtn')?.addEventListener('click', HAWKVIEW.Analytics.show);
+
+                    document.getElementById('manageStoresCard')?.addEventListener('click', HAWKVIEW.Admin.showManageStores);
+                    document.getElementById('addStoreBtn')?.addEventListener('click', HAWKVIEW.Admin.handleAddStoreForm);
+
+                    // --- NEW SEARCH EVENT LISTENERS ---
+                    document.getElementById('performSearchBtn')?.addEventListener('click', HAWKVIEW.Search.perform);
+                    document.getElementById('productSearchInput')?.addEventListener('keypress', function(e) {
+                         if (e.key === 'Enter') {
+                             HAWKVIEW.Search.perform();
+                         }
+                    });
+                    document.getElementById('initialPlaceholder')?.classList.remove('hidden');
                 },
-                // ... All other original UI functions
-                showSignUpForm: function() { /* ... */ },
-                showSignInForm: function() { /* ... */ },
-                backToAuthOptions: function() { /* ... */ },
+                showInstallModal: function() {
+                     // This is now a FALLBACK for the install button
+                     const existingModal = document.querySelector('.install-modal');
+                     if (existingModal) return;
+
+                     const installModal = document.createElement('div');
+                     installModal.className = 'install-modal';
+                     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) && !window.MSStream;
+                     const isAndroid = /Android/.test(navigator.userAgent);
+                     let instructions = '';
+                     if (isIOS) {
+                         instructions = 'Tap the Share button <span style="font-size: 20px;">⬆️</span> then "Add to Home Screen" <span style="font-size: 20px;">➕</span>';
+                     } else if (isAndroid) {
+                         instructions = 'Tap the menu button <span style="font-size: 20px;">⋮</span> then "Add to Home Screen" or "Install App"';
+                     } else {
+                         instructions = 'Use your browser\'s menu to "Add to Home Screen" or "Install App"';
+                     }
+                     installModal.innerHTML = `
+                         <div class="install-content">
+                             <h3 class="ui-font">Install HAWKVIEW</h3>
+                             <p class="ui-font">${instructions}</p>
+                             <p class="ui-font" style="font-size: 0.9rem; color: #F0C55F; margin-bottom: 25px;">
+                                 Once installed, HAWKVIEW will open in fullscreen mode
+                             </p>
+                             <button class="continue-btn ui-font" onclick="this.closest('.install-modal').remove()">
+                                 Continue
+                             </button>
+                         </div>
+                     `;
+                     document.body.appendChild(installModal);
+                },
+                showSignUpForm: function() {
+                    document.getElementById('authOptions').classList.add('hidden');
+                    document.getElementById('signUpForm').classList.remove('hidden');
+                },
+                showSignInForm: function() {
+                    document.getElementById('authOptions').classList.add('hidden');
+                    document.getElementById('signInForm').classList.remove('hidden');
+                },
+                backToAuthOptions: function() {
+                    document.getElementById('authOptions').classList.remove('hidden');
+                    document.getElementById('signUpForm').classList.add('hidden');
+                    document.getElementById('signInForm').classList.add('hidden');
+                },
+                updateUserInterface: function() {
+                     const userTypeDisplay = document.getElementById('userTypeDisplay');
+                     const emailDisplay = document.getElementById('emailDisplay');
+                     if (userTypeDisplay) userTypeDisplay.textContent =
+                         HAWKVIEW.state.userType === 'guest' ? 'Guest' :
+                         HAWKVIEW.state.userType === 'admin' ? 'Administrator' : 'Registered User';
+                     if (emailDisplay) emailDisplay.textContent = HAWKVIEW.state.currentUser?.email || 'Not signed in';
+
+                     const isUser = HAWKVIEW.state.userType === 'user' || HAWKVIEW.state.userType === 'admin';
+                     const isAdmin = HAWKVIEW.state.userType === 'admin';
+                     const isGuest = HAWKVIEW.state.userType === 'guest';
+                     
+                     document.getElementById('userOnlyFeatures').classList.toggle('hidden', !isUser);
+                     document.getElementById('adminTabButton').classList.toggle('hidden', !isAdmin);
+                     document.getElementById('guestOnlyMessage').classList.toggle('hidden', !isGuest);
+                }
             },
+
+            // --- AUTHENTICATION MANAGER ---
             Auth: {
-                 init: function() { /* ... */ },
-                 guestAccess: function() {
+                init: function() { },
+                guestAccess: function() {
                     HAWKVIEW.state.userType = 'guest';
                     HAWKVIEW.state.currentUser = { email: 'Guest User', type: 'guest' };
-                    HAWKVIEW.showScreen('mainAppScreen');
                     HAWKVIEW.UI.updateUserInterface();
-                 },
-                // ... All other original Auth functions
+                    HAWKVIEW.showScreen('mainAppScreen');
+                },
+                handleSignUp: function() {
+                     const email = document.getElementById('signUpEmail').value;
+                     const password = document.getElementById('signUpPassword').value;
+                     const confirm = document.getElementById('signUpConfirm').value;
+                     if (!email || !password || !confirm) {
+                         alert('Please fill in all fields');
+                         return;
+                     }
+                     if (!email.includes('@')) {
+                         alert('Please enter a valid email address');
+                         return;
+                     }
+                     if (password !== confirm) {
+                         alert('Passwords do not match');
+                         return;
+                     }
+                     if (password.length < 6) {
+                         alert('Password must be at least 6 characters');
+                         return;
+                     }
+                     const userData = { email, password, type: 'user' };
+                     try {
+                         localStorage.setItem('hawkview_user_' + email, JSON.stringify(userData));
+                         HAWKVIEW.state.userType = 'user';
+                         HAWKVIEW.state.currentUser = userData;
+                         HAWKVIEW.UI.updateUserInterface();
+                         HAWKVIEW.showScreen('mainAppScreen');
+                     } catch (e) {
+                         alert('Failed to create account. Storage might be full.');
+                     }
+                },
+                handleSignIn: function() {
+                     const email = document.getElementById('signInEmail').value;
+                     const password = document.getElementById('signInPassword').value;
+                     const remember = document.getElementById('rememberMe').checked;
+                     if (!email || !password) {
+                         alert('Please fill in all fields');
+                         return;
+                     }
+                     if (email === 'admin@hawkview.com' && password === 'hawkview2025') {
+                         HAWKVIEW.state.userType = 'admin';
+                         HAWKVIEW.state.currentUser = { email, type: 'admin' };
+                         if (remember) localStorage.setItem('hawkview_remember', email);
+                         HAWKVIEW.UI.updateUserInterface();
+                         HAWKVIEW.showScreen('mainAppScreen');
+                         return;
+                     }
+                     const storedUser = localStorage.getItem('hawkview_user_' + email);
+                     if (storedUser) {
+                         const userData = JSON.parse(storedUser);
+                         if (userData.password === password) {
+                             HAWKVIEW.state.userType = 'user';
+                             HAWKVIEW.state.currentUser = userData;
+                             if (remember) {
+                                 localStorage.setItem('hawkview_remember', email);
+                             } else {
+                                 localStorage.removeItem('hawkview_remember');
+                             }
+                             HAWKVIEW.UI.updateUserInterface();
+                             HAWKVIEW.showScreen('mainAppScreen');
+                             return;
+                         }
+                     }
+                     alert('Invalid email or password');
+                },
+                logout: function() {
+                     localStorage.removeItem('hawkview_remember');
+                     HAWKVIEW.state.currentUser = null;
+                     HAWKVIEW.state.userType = 'guest';
+                     HAWKVIEW.UI.updateUserInterface();
+                     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                         HAWKVIEW.showScreen('authScreen');
+                     } else {
+                         HAWKVIEW.showScreen('splashContainer');
+                     }
+                },
+                resetUserData: function() {
+                     if (confirm('Are you sure you want to reset all your data? This cannot be undone.')) {
+                         if (HAWKVIEW.state.currentUser && HAWKVIEW.state.currentUser.email !== 'Guest User') {
+                             localStorage.removeItem('hawkview_user_' + HAWKVIEW.state.currentUser.email);
+                         }
+                         alert('User data reset successfully!');
+                         HAWKVIEW.Auth.logout();
+                     }
+                }
             },
-            // ... All other original modules (Search, Admin, etc.)
+
+            // --- NEW SEARCH MODULE ---
+            Search: {
+                perform: function() {
+                    const searchTerm = document.getElementById('productSearchInput').value.trim();
+                    if (!searchTerm) {
+                        alert('Please enter a product name or category to search for.');
+                        return;
+                    }
+
+                    console.log(`Performing search for: ${searchTerm}`);
+                    const resultsArea = document.getElementById('searchResultsArea');
+                    const initialPlaceholder = document.getElementById('initialPlaceholder');
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    const resultsContainer = document.getElementById('searchResultsContainer');
+                    const suggestedStoresSection = document.getElementById('suggestedStoresSection');
+                    const suggestedStoresList = document.getElementById('suggestedStoresList');
+
+                    initialPlaceholder.classList.add('hidden');
+                    resultsContainer.classList.add('hidden');
+                    suggestedStoresSection.classList.add('hidden');
+                    loadingIndicator.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        loadingIndicator.classList.add('hidden');
+                        resultsContainer.classList.remove('hidden');
+
+                        const mockResults = [];
+                        const configuredStores = HAWKVIEW.state.configuredStores;
+                        if (configuredStores.length === 0) {
+                             resultsContainer.innerHTML = `<p class="ui-font text-center text-red-400 py-10">No stores are configured. Please add stores in the Admin panel.</p>`;
+                             return;
+                        }
+
+                        configuredStores.forEach((store, index) => {
+                             if (Math.random() > 0.3) {
+                                 const priceOffset = (Math.random() * 50) - 25;
+                                 const originalPrice = 1000 + (index * 50);
+                                 const finalPrice = originalPrice + priceOffset;
+                                 const discount = finalPrice < originalPrice ? `-${(((originalPrice - finalPrice) / originalPrice) * 100).toFixed(1)}%` : "";
+                                 const hasCoupon = Math.random() > 0.5;
+                                 const couponCode = hasCoupon ? `COUPON${Math.floor(Math.random() * 900) + 100}` : "";
+                                 const mockImageUrl = `https://picsum.photos/seed/${searchTerm.replace(/\s+/g, '')}${index}/300/200`;
+
+                                 mockResults.push({
+                                     storeId: store.id,
+                                     storeName: store.name,
+                                     storeIcon: "fas fa-store",
+                                     productName: searchTerm,
+                                     productImageUrl: mockImageUrl,
+                                     price: parseFloat(finalPrice.toFixed(2)),
+                                     originalPrice: parseFloat(originalPrice.toFixed(2)),
+                                     discount: discount,
+                                     coupon: couponCode,
+                                     url: store.affiliateTemplate.replace(/{[^}]+}/g, 'PRODUCT_ID_123'),
+                                     confidence: `${(90 + Math.random() * 9).toFixed(1)}%`,
+                                     savings: `$${(originalPrice - finalPrice).toFixed(2)}`,
+                                     trend: index % 3 === 0 ? "Down 5%" : (index % 3 === 1 ? "Stable" : "Up 2%")
+                                 });
+                             }
+                        });
+
+                        mockResults.sort((a, b) => a.price - b.price);
+
+                        const isAdmin = HAWKVIEW.state.userType === 'admin';
+                        if (mockResults.length === 0) {
+                             resultsContainer.innerHTML = `<p class="ui-font text-center py-10">Sorry, we couldn't find any deals for "${searchTerm}" in the configured stores.</p>`;
+                             return;
+                        }
+                        
+                        let resultsHTML = `
+                            <div class="results-header">
+                                <div class="results-stats ui-font">Found ${mockResults.length} deals for "${searchTerm}"</div>
+                            </div>
+                        `;
+                        resultsContainer.innerHTML = resultsHTML + mockResults.map(result => `
+                            <div class="result-card">
+                                <div class="product-image-placeholder"><img src="${result.productImageUrl}" alt="${result.productName}"></div>
+                                <div class="store-name ui-font"><i class="${result.storeIcon}"></i> ${result.storeName}</div>
+                                <div class="price-container">
+                                    <span class="final-price ui-font">$${result.price.toFixed(2)}</span>
+                                    ${result.originalPrice > result.price ? `<span class="original-price ui-font">$${result.originalPrice.toFixed(2)}</span>` : ''}
+                                    ${result.discount ? `<span class="discount-badge ui-font">${result.discount}</span>` : ''}
+                                </div>
+                                <div class="coupon-section">
+                                    <div>
+                                        ${result.coupon ? `<span class="coupon-code ui-font">${result.coupon}</span>` : `<span class="ui-font text-gray-500">No coupon available</span>`}
+                                    </div>
+                                    <div class="action-buttons">
+                                        <a href="${result.url}" target="_blank" class="buy-btn ui-font"><i class="fas fa-shopping-cart"></i> Buy Now</a>
+                                        ${result.coupon ? `<button class="copy-btn ui-font copy-coupon-btn" data-coupon="${result.coupon}">Copy Code</button>` : ''}
+                                    </div>
+                                </div>
+                                <div class="ai-insights">
+                                    <h4 class="ui-font"><i class="fas fa-chart-line"></i> AI Insights</h4>
+                                    <div class="insight-item"><span class="insight-label ui-font">AI Confidence:</span><span class="ui-font">${result.confidence}</span></div>
+                                    <div class="insight-item"><span class="insight-label ui-font">Your Savings:</span><span class="ui-font text-green-500 font-bold">${result.savings}</span></div>
+                                    <div class="insight-item"><span class="insight-label ui-font">Price Trend:</span><span class="ui-font">${result.trend}</span></div>
+                                </div>
+                            </div>
+                        `).join('');
+
+                        document.querySelectorAll('.copy-coupon-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                navigator.clipboard.writeText(this.dataset.coupon).then(() => {
+                                    this.textContent = 'Copied!';
+                                    setTimeout(() => { this.textContent = 'Copy Code'; }, 2000);
+                                });
+                            });
+                        });
+                    }, 1500);
+                }
+            },
+
+            // --- PURCHASE HISTORY ---
+            PurchaseHistory: {
+                init: function() { },
+                show: function() {
+                    alert("Purchase History feature. This would show a list of past searches/purchases for the user.");
+                }
+            },
+
+            // --- ANALYTICS ---
+            Analytics: {
+                init: function() { },
+                show: function() {
+                    alert("Advanced Analytics feature. This would show personalized shopping insights and trends.");
+                }
+            },
+
+            // --- ADMIN PANEL ---
+            Admin: {
+                init: function() { },
+                showManageStores: function() {
+                    document.getElementById('manageStoresPanel').classList.toggle('hidden');
+                },
+                handleAddStoreForm: function() {
+                    const name = document.getElementById('newStoreName').value.trim();
+                    const url = document.getElementById('newStoreUrl').value.trim();
+                    const affiliate = document.getElementById('newAffiliateLink').value.trim();
+
+                    if (HAWKVIEW.addConfiguredStore({ name, baseUrl: url, affiliateTemplate: affiliate })) {
+                        alert(`Store "${name}" added successfully!`);
+                        document.getElementById('newStoreName').value = '';
+                        document.getElementById('newStoreUrl').value = '';
+                        document.getElementById('newAffiliateLink').value = '';
+                    }
+                },
+                updateStoresListUI: function() {
+                     const listEl = document.getElementById('storesList');
+                     if (!listEl) return;
+                     const stores = HAWKVIEW.state.configuredStores;
+                     if (stores.length === 0) {
+                         listEl.innerHTML = '<p class="ui-font text-center text-gray-500">No stores configured yet.</p>';
+                         return;
+                     }
+                     listEl.innerHTML = stores.map(store => `
+                        <div class="bg-gray-800 p-2 rounded text-sm ui-font flex justify-between items-center">
+                             <span>${store.name} (<a href="${store.baseUrl}" target="_blank" class="text-yellow-400 hover:underline">${store.baseUrl}</a>)</span>
+                             <button class="text-xs text-red-400 hover:text-red-300 remove-store-btn" data-storeid="${store.id}">Remove</button>
+                         </div>
+                     `).join('');
+                     document.querySelectorAll('.remove-store-btn').forEach(btn => {
+                         btn.addEventListener('click', function() {
+                             const storeId = this.getAttribute('data-storeid');
+                             if (confirm(`Are you sure you want to remove this store?`)) {
+                                 HAWKVIEW.state.configuredStores = HAWKVIEW.state.configuredStores.filter(s => s.id !== storeId);
+                                 HAWKVIEW.saveConfiguredStores();
+                                 alert('Store removed.');
+                             }
+                         });
+                     });
+                }
+            }
         };
 
+        // --- START THE APP ---
         window.addEventListener('load', () => {
             HAWKVIEW.init();
         });
+    </script>
+    <!-- --- CRITICAL FULLSCREEN ENHANCEMENT SCRIPT --- -->
+    <script>
+        (function() {
+            function applyStandaloneFixes() {
+                if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                    const installBtn = document.getElementById('installBtn');
+                    if (installBtn) {
+                       installBtn.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyStandaloneFixes);
+            } else {
+                applyStandaloneFixes();
+            }
+        })();
     </script>
 </body>
 </html>
