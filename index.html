@@ -277,10 +277,15 @@
         }
         /* --- NEW SEARCH STYLES (Enhanced with Emerald) --- */
         .app-header-video {
-             width: 100%;
-             max-width: 200px;
-             margin: 0 auto 10px auto;
-        }
+    width: 100%;
+    max-width: none; /* Allow it to be full width */
+    padding: 1rem; /* Add some spacing around the video */
+    margin: 0;
+}
+.app-header-video .video-border {
+    max-width: 450px; /* Control the max size of the video within the full-width container */
+    margin: 0 auto; /* Center the video */
+}
         .app-header-video video {
              width: 100%;
              height: auto;
@@ -758,7 +763,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full max-w-md mb-8">
+                <div class="w-full max-w-md mb-8 mt-8">
                     <button id="installBtn" class="install-btn ui-font w-full py-4 px-8 rounded-full text-lg tracking-wide" style="display: none;">
                         <i class="fas fa-download mr-2"></i>Install HAWKVIEW
                     </button>
@@ -828,7 +833,7 @@
     <div id="mainAppScreen" class="screen hidden">
         <div class="min-h-screen flex flex-col">
             <!-- CONSISTENT HEADER WITH VIDEO -->
-            <div class="p-4 border-b border-yellow-400 border-opacity-30 flex flex-col items-center">
+            <div class="pb-4 border-b border-yellow-400 border-opacity-30 flex flex-col items-center">
                  <div class="app-header-video">
                      <div class="video-border">
                          <video class="w-full h-full object-cover" style="border-radius: 10px;" autoplay muted loop playsinline webkit-playsinline>
