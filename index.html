@@ -97,7 +97,7 @@
             opacity: 1;
             pointer-events: all;
         }
-        
+
         /* --- ENHANCED VIDEO BORDER WITH EMERALD/GOLD GRADIENT --- */
         .video-border {
             background: linear-gradient(45deg, #F0C55F, #00C896, #F0C55F, #00BFA5);
@@ -969,7 +969,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>```    
     <script>
         // --- PWA INSTALL PROMPT HANDLING ---
         let deferredInstallPrompt = null;
@@ -1304,7 +1304,7 @@
                 }
             },
 
-            // --- NEW SEARCH MODULE ---
+                       // --- NEW SEARCH MODULE ---
             Search: {
                 perform: function() {
                     const searchTerm = document.getElementById('productSearchInput').value.trim();
@@ -1321,15 +1321,19 @@
                     const suggestedStoresSection = document.getElementById('suggestedStoresSection');
                     const suggestedStoresList = document.getElementById('suggestedStoresList');
 
+                    // Hide placeholder, show loading
                     initialPlaceholder.classList.add('hidden');
                     resultsContainer.classList.add('hidden');
-                    suggestedStoresSection.classList.add('hidden');
+                    suggestedStoresSection.classList.add('hidden'); // Hide suggested stores initially
                     loadingIndicator.classList.remove('hidden');
 
+                    // Simulate API call delay
                     setTimeout(() => {
+                        // Hide loading, show results
                         loadingIndicator.classList.add('hidden');
                         resultsContainer.classList.remove('hidden');
 
+                        // Mock search results data
                         const mockResults = [];
                         const configuredStores = HAWKVIEW.state.configuredStores;
                         if (configuredStores.length === 0) {
@@ -1338,13 +1342,16 @@
                         }
 
                         configuredStores.forEach((store, index) => {
-                             if (Math.random() > 0.3) {
-                                 const priceOffset = (Math.random() * 50) - 25;
-                                 const originalPrice = 1000 + (index * 50);
+                             // Simulate finding the product in some stores
+                             if (Math.random() > 0.3) { // 70% chance of finding it in a store
+                                 const priceOffset = (Math.random() * 50) - 25; // -25 to +25
+                                 const originalPrice = 1000 + (index * 50); // Base price varies by store
                                  const finalPrice = originalPrice + priceOffset;
                                  const discount = finalPrice < originalPrice ? `-${(((originalPrice - finalPrice) / originalPrice) * 100).toFixed(1)}%` : "";
                                  const hasCoupon = Math.random() > 0.5;
                                  const couponCode = hasCoupon ? `COUPON${Math.floor(Math.random() * 900) + 100}` : "";
+
+                                 // Mock image URL - in a real app, this comes from the store's API
                                  const mockImageUrl = `https://picsum.photos/seed/${searchTerm.replace(/\s+/g, '')}${index}/300/200`;
 
                                  mockResults.push({
@@ -1352,12 +1359,14 @@
                                      storeName: store.name,
                                      storeIcon: "fas fa-store",
                                      productName: searchTerm,
-                                     productImageUrl: mockImageUrl,
+                                     productImageUrl: mockImageUrl, // Add image URL
                                      price: parseFloat(finalPrice.toFixed(2)),
                                      originalPrice: parseFloat(originalPrice.toFixed(2)),
                                      discount: discount,
                                      coupon: couponCode,
-                                     url: store.affiliateTemplate.replace(/{[^}]+}/g, 'PRODUCT_ID_123'),
+                                     // Use the store's affiliate template to generate the final URL
+                                     // In a real scenario, you'd have the specific product ID from the store
+                                     url: store.affiliateTemplate.replace(/{[^}]+}/g, 'PRODUCT_ID_123'), // Replace placeholder
                                      confidence: `${(90 + Math.random() * 9).toFixed(1)}%`,
                                      savings: `$${(originalPrice - finalPrice).toFixed(2)}`,
                                      trend: index % 3 === 0 ? "Down 5%" : (index % 3 === 1 ? "Stable" : "Up 2%")
@@ -1365,55 +1374,186 @@
                              }
                         });
 
+                        // Sort by final price
                         mockResults.sort((a, b) => a.price - b.price);
 
+                        // --- MOCK SUGGESTED STORES LOGIC (ADMIN ONLY) ---
+                        const mockSuggestedStores = [];
                         const isAdmin = HAWKVIEW.state.userType === 'admin';
-                        if (mockResults.length === 0) {
+                        if (isAdmin && mockResults.length < 3) { // Suggest if fewer than 3 results
+                             // Simulate finding the product on other (not yet configured) stores
+                             const potentialNewStores = [
+                                 { name: "GlobalRetailer", baseUrl: "https://globalretailer.com", affiliateExample: "https://globalretailer.com?ref=YOUR_ID&prod=123" },
+                                 { name: "OnlineMegaStore", baseUrl: "https://onlinemegastore.com", affiliateExample: "https://onlinemegastore.com?partner=YOUR_ID&item=456" },
+                                 { name: "NicheGadgets", baseUrl: "https://nichegadgets.com", affiliateExample: "https://nichegadgets.com?affil=YOUR_ID&sku=789" }
+                             ];
+                             potentialNewStores.forEach((store, i) => {
+                                 // Maybe suggest 1 or 2 stores
+                                 if (Math.random() > 0.6 || (i===0 && mockResults.length === 0)) {
+                                     mockSuggestedStores.push({
+                                         name: store.name,
+                                         baseUrl: store.baseUrl,
+                                         // Provide a template suggestion based on the example
+                                         suggestedTemplate: store.affiliateExample.replace(/YOUR_ID/, 'hawkview_id').replace(/\d+$/, '{PRODUCT_ID}')
+                                     });
+                                 }
+                             });
+                        }
+                        // --- END MOCK SUGGESTED STORES LOGIC ---
+
+
+                        // --- RENDER RESULTS ---
+                        if (mockResults.length === 0 && mockSuggestedStores.length === 0) {
                              resultsContainer.innerHTML = `<p class="ui-font text-center py-10">Sorry, we couldn't find any deals for "${searchTerm}" in the configured stores.</p>`;
                              return;
                         }
-                        
-                        let resultsHTML = `
+
+                        let resultsHTML = '';
+
+                        // Results Header
+                        resultsHTML += `
                             <div class="results-header">
                                 <div class="results-stats ui-font">Found ${mockResults.length} deals for "${searchTerm}"</div>
+                                <div class="sort-options ui-font">
+                                    <label for="sortSelect">Sort by:</label>
+                                    <select id="sortSelect" class="ui-font">
+                                        <option>Lowest Price</option>
+                                        <option>Highest Savings</option>
+                                        <option>Best Deal</option>
+                                    </select>
+                                </div>
                             </div>
                         `;
-                        resultsContainer.innerHTML = resultsHTML + mockResults.map(result => `
-                            <div class="result-card">
-                                <div class="product-image-placeholder"><img src="${result.productImageUrl}" alt="${result.productName}"></div>
-                                <div class="store-name ui-font"><i class="${result.storeIcon}"></i> ${result.storeName}</div>
-                                <div class="price-container">
-                                    <span class="final-price ui-font">$${result.price.toFixed(2)}</span>
-                                    ${result.originalPrice > result.price ? `<span class="original-price ui-font">$${result.originalPrice.toFixed(2)}</span>` : ''}
-                                    ${result.discount ? `<span class="discount-badge ui-font">${result.discount}</span>` : ''}
-                                </div>
-                                <div class="coupon-section">
-                                    <div>
-                                        ${result.coupon ? `<span class="coupon-code ui-font">${result.coupon}</span>` : `<span class="ui-font text-gray-500">No coupon available</span>`}
-                                    </div>
-                                    <div class="action-buttons">
-                                        <a href="${result.url}" target="_blank" class="buy-btn ui-font"><i class="fas fa-shopping-cart"></i> Buy Now</a>
-                                        ${result.coupon ? `<button class="copy-btn ui-font copy-coupon-btn" data-coupon="${result.coupon}">Copy Code</button>` : ''}
-                                    </div>
-                                </div>
-                                <div class="ai-insights">
-                                    <h4 class="ui-font"><i class="fas fa-chart-line"></i> AI Insights</h4>
-                                    <div class="insight-item"><span class="insight-label ui-font">AI Confidence:</span><span class="ui-font">${result.confidence}</span></div>
-                                    <div class="insight-item"><span class="insight-label ui-font">Your Savings:</span><span class="ui-font text-green-500 font-bold">${result.savings}</span></div>
-                                    <div class="insight-item"><span class="insight-label ui-font">Price Trend:</span><span class="ui-font">${result.trend}</span></div>
-                                </div>
-                            </div>
-                        `).join('');
 
+                        if (mockResults.length > 0) {
+                             mockResults.forEach((result, index) => {
+                                 resultsHTML += `
+                                     <div class="result-card">
+                                         <div class="product-image-placeholder">
+                                             <img src="${result.productImageUrl}" alt="${result.productName}">
+                                         </div>
+                                         <div class="store-name ui-font"><i class="${result.storeIcon}"></i> ${result.storeName}</div>
+                                         <div class="price-container">
+                                             <span class="final-price ui-font">$${result.price.toFixed(2)}</span>
+                                             ${result.originalPrice > result.price ? `<span class="original-price ui-font">$${result.originalPrice.toFixed(2)}</span>` : ''}
+                                             ${result.discount ? `<span class="discount-badge ui-font">${result.discount}</span>` : ''}
+                                         </div>
+                                         <div class="coupon-section">
+                                             <div>
+                                                 ${result.coupon ? `<span class="coupon-code ui-font">${result.coupon}</span>` : `<span class="ui-font text-gray-500">No coupon available</span>`}
+                                             </div>
+                                             <div class="action-buttons">
+                                                 <a href="${result.url}" target="_blank" class="buy-btn ui-font">
+                                                     <i class="fas fa-shopping-cart"></i> Buy Now
+                                                 </a>
+                                                 ${result.coupon ? `<button class="copy-btn ui-font copy-coupon-btn" data-coupon="${result.coupon}">
+                                                     Copy Code
+                                                 </button>` : ''}
+                                             </div>
+                                         </div>
+                                         <div class="ai-insights">
+                                             <h4 class="ui-font"><i class="fas fa-chart-line"></i> AI Insights</h4>
+                                             <div class="insight-item">
+                                                 <span class="insight-label ui-font">AI Confidence:</span>
+                                                 <span class="ui-font">${result.confidence}</span>
+                                             </div>
+                                             <div class="insight-item">
+                                                 <span class="insight-label ui-font">Your Savings:</span>
+                                                 <span class="ui-font text-green-500 font-bold">${result.savings}</span>
+                                             </div>
+                                             <div class="insight-item">
+                                                 <span class="insight-label ui-font">Price Trend:</span>
+                                                 <span class="ui-font">${result.trend}</span>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 `;
+                             });
+                        } else {
+                             resultsHTML += `<p class="ui-font text-center py-5">No deals found in currently configured stores.</p>`;
+                        }
+
+                        resultsContainer.innerHTML = resultsHTML;
+
+                        // --- RENDER SUGGESTED STORES SECTION (ADMIN ONLY) ---
+                        if (isAdmin && mockSuggestedStores.length > 0) {
+                             suggestedStoresSection.classList.remove('hidden');
+                             let suggestedHTML = '';
+                             mockSuggestedStores.forEach((store, index) => {
+                                 const formId = `addForm_${store.name.replace(/\s+/g, '_')}`;
+                                 suggestedHTML += `
+                                     <div class="suggested-store-card">
+                                         <div class="suggested-store-header">
+                                             <div class="suggested-store-name ui-font">${store.name}</div>
+                                             <button class="add-suggested-store-btn ui-font" data-storename="${store.name}" data-storeurl="${store.baseUrl}" data-affiliatetemplate="${store.suggestedTemplate}">
+                                                 Add Store
+                                             </button>
+                                         </div>
+                                         <p class="ui-font text-xs text-gray-500 mt-1">Base URL: ${store.baseUrl}</p>
+                                         <p class="ui-font text-xs text-gray-500 mt-1">Affiliate Template: ${store.suggestedTemplate}</p>
+                                         <div class="add-store-form hidden" id="${formId}">
+                                             <input type="text" class="form-input w-full mb-2 suggested-store-name-input" value="${store.name}" placeholder="Store Name" required>
+                                             <input type="text" class="form-input w-full mb-2 suggested-store-url-input" value="${store.baseUrl}" placeholder="Store Base URL (e.g., https://example.com)" required>
+                                             <input type="text" class="form-input w-full mb-2 suggested-store-affiliate-input" value="${store.suggestedTemplate}" placeholder="Affiliate Link Template (e.g., https://example.com?ref=YOUR_ID&product={PRODUCT_ID})" required>
+                                             <button class="auth-btn ui-font w-full py-2 px-4 rounded-full font-bold confirm-add-suggested-store-btn">
+                                                 <i class="fas fa-plus mr-2"></i>Confirm Add Store
+                                             </button>
+                                         </div>
+                                     </div>
+                                 `;
+                             });
+                             suggestedStoresList.innerHTML = suggestedHTML;
+
+                             document.querySelectorAll('.add-suggested-store-btn').forEach(btn => {
+                                 btn.addEventListener('click', function() {
+                                     const storeName = this.getAttribute('data-storename');
+                                     const formId = `addForm_${storeName.replace(/\s+/g, '_')}`;
+                                     const formElement = document.getElementById(formId);
+                                     if (formElement) {
+                                         document.querySelectorAll('.add-store-form').forEach(f => f.classList.add('hidden'));
+                                         formElement.classList.toggle('hidden');
+                                     }
+                                 });
+                             });
+
+                             document.querySelectorAll('.confirm-add-suggested-store-btn').forEach(btn => {
+                                 btn.addEventListener('click', function() {
+                                     const form = this.closest('.add-store-form');
+                                     const nameInput = form.querySelector('.suggested-store-name-input');
+                                     const urlInput = form.querySelector('.suggested-store-url-input');
+                                     const affiliateInput = form.querySelector('.suggested-store-affiliate-input');
+                                     const storeData = { name: nameInput.value.trim(), baseUrl: urlInput.value.trim(), affiliateTemplate: affiliateInput.value.trim() };
+                                     if (HAWKVIEW.addConfiguredStore(storeData)) {
+                                         alert(`Store "${storeData.name}" added successfully!`);
+                                         form.classList.add('hidden');
+                                         HAWKVIEW.Search.perform();
+                                     }
+                                 });
+                             });
+                        } else {
+                             suggestedStoresSection.classList.add('hidden');
+                        }
+                        
                         document.querySelectorAll('.copy-coupon-btn').forEach(btn => {
                             btn.addEventListener('click', function() {
-                                navigator.clipboard.writeText(this.dataset.coupon).then(() => {
-                                    this.textContent = 'Copied!';
-                                    setTimeout(() => { this.textContent = 'Copy Code'; }, 2000);
-                                });
+                                const couponCode = this.getAttribute('data-coupon');
+                                if (couponCode) {
+                                    navigator.clipboard.writeText(couponCode).then(() => {
+                                        const originalText = this.textContent;
+                                        this.textContent = 'Copied!';
+                                        setTimeout(() => { this.textContent = originalText; }, 2000);
+                                    }).catch(err => {
+                                        console.error('Failed to copy coupon: ', err);
+                                        alert(`Coupon Code: ${couponCode}`);
+                                    });
+                                }
                             });
                         });
-                    }, 1500);
+
+                        document.getElementById('sortSelect')?.addEventListener('change', function() {
+                             alert(`Sorting by ${this.value}... (This would re-fetch results from the backend)`);
+                        });
+                    }, 2000);
                 }
             },
 
@@ -1443,12 +1583,13 @@
                     const name = document.getElementById('newStoreName').value.trim();
                     const url = document.getElementById('newStoreUrl').value.trim();
                     const affiliate = document.getElementById('newAffiliateLink').value.trim();
-
-                    if (HAWKVIEW.addConfiguredStore({ name, baseUrl: url, affiliateTemplate: affiliate })) {
-                        alert(`Store "${name}" added successfully!`);
+                    const storeData = { name, baseUrl: url, affiliateTemplate: affiliate };
+                    if (HAWKVIEW.addConfiguredStore(storeData)) {
+                        alert(`Store "${name}" added successfully from Admin panel!`);
                         document.getElementById('newStoreName').value = '';
                         document.getElementById('newStoreUrl').value = '';
                         document.getElementById('newAffiliateLink').value = '';
+                        HAWKVIEW.Admin.updateStoresListUI();
                     }
                 },
                 updateStoresListUI: function() {
@@ -1459,12 +1600,15 @@
                          listEl.innerHTML = '<p class="ui-font text-center text-gray-500">No stores configured yet.</p>';
                          return;
                      }
-                     listEl.innerHTML = stores.map(store => `
-                        <div class="bg-gray-800 p-2 rounded text-sm ui-font flex justify-between items-center">
+                     let listHTML = '';
+                     stores.forEach(store => {
+                         listHTML += `<div class="bg-gray-800 p-2 rounded text-sm ui-font flex justify-between items-center">
                              <span>${store.name} (<a href="${store.baseUrl}" target="_blank" class="text-yellow-400 hover:underline">${store.baseUrl}</a>)</span>
                              <button class="text-xs text-red-400 hover:text-red-300 remove-store-btn" data-storeid="${store.id}">Remove</button>
-                         </div>
-                     `).join('');
+                         </div>`;
+                     });
+                     listEl.innerHTML = listHTML;
+
                      document.querySelectorAll('.remove-store-btn').forEach(btn => {
                          btn.addEventListener('click', function() {
                              const storeId = this.getAttribute('data-storeid');
