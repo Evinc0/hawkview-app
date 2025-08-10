@@ -276,22 +276,6 @@
             max-width: 600px !important;
         }
         /* --- NEW SEARCH STYLES (Enhanced with Emerald) --- */
-        .app-header-video {
-    width: 100%;
-    max-width: none; /* Allow it to be full width */
-    padding: 1rem; /* Add some spacing around the video */
-    margin: 0;
-}
-.app-header-video .video-border {
-    max-width: 450px; /* Control the max size of the video within the full-width container */
-    margin: 0 auto; /* Center the video */
-}
-        .app-header-video video {
-             width: 100%;
-             height: auto;
-             display: block;
-             border-radius: 10px;
-        }
         .search-container {
             max-width: 600px;
             margin: 0 auto;
@@ -678,21 +662,37 @@
             .features-container, .feature-grid, .feature-card { max-width: 90vw !important; width: auto !important; margin: 0 auto !important; }
             .feature-grid { grid-template-columns: 1fr !important; gap: 15px !important; justify-items: center !important; }
             .video-container { max-width: 98vw; margin: 5px auto; }
-            .app-header-video { max-width: 150px; }
             .title-size { font-size: clamp(2rem, 6vw, 4rem); }
             .subtitle-size { font-size: clamp(0.8rem, 2vw, 1.1rem); }
-            .search-bar { flex-direction: column; border-radius: 15px; }
-            .search-bar input { border-radius: 10px 10px 0 0; }
-            .search-bar button { border-radius: 0 0 10px 10px; }
+            .search-bar {
+                flex-direction: column;
+                border-radius: 30px; /* Match the desktop pill shape */
+            }
+            .search-bar input {
+                padding: 15px 20px; /* Match desktop padding */
+                border-radius: 0; /* Remove radius */
+                text-align: center; /* Center placeholder text */
+            }
+            .search-bar button {
+                padding: 15px; /* Match desktop padding */
+                border-radius: 0; /* Remove radius */
+                width: 100%;
+            }
             .action-buttons { flex-direction: column; width: 100%; }
             .buy-btn, .copy-btn { width: 100%; justify-content: center; }
-            #authScreen .video-container { max-width: 20rem; }
+            #authScreen .video-container { 
+                max-width: 20rem; 
+                margin-bottom: 4rem;
+            }
         }
 
         @media (min-width: 769px) {
             #desktopSplashScreen { display: flex; }
             #mobileSplashScreen { display: none; }
-            #authScreen .video-container { max-width: 28rem; }
+            #authScreen .video-container { 
+                max-width: 28rem; 
+                margin-bottom: 2rem;
+            }
             .title-size { font-size: 4rem; }
             .subtitle-size { font-size: 1.1rem; }
         }
@@ -834,12 +834,14 @@
         <div class="min-h-screen flex flex-col">
             <!-- CONSISTENT HEADER WITH VIDEO -->
             <div class="pb-4 border-b border-yellow-400 border-opacity-30 flex flex-col items-center">
-                 <div class="app-header-video">
+                 <div class="video-container w-full mt-4">
                      <div class="video-border">
-                         <video class="w-full h-full object-cover" style="border-radius: 10px;" autoplay muted loop playsinline webkit-playsinline>
-                             <source src="hawkview_logo.mp4" type="video/mp4">
-                             Your browser does not support the video tag.
-                         </video>
+                         <div class="relative w-full" style="padding-bottom: 56.25%; border-radius: 16px; overflow: hidden; background: #000;">
+                             <video class="absolute top-0 left-0 w-full h-full object-cover" style="border-radius: 16px;" autoplay muted loop playsinline webkit-playsinline>
+                                 <source src="hawkview_logo.mp4" type="video/mp4">
+                                 Your browser does not support the video tag.
+                             </video>
+                         </div>
                      </div>
                  </div>
                  <button id="logoutBtn" class="ui-font text-xs text-yellow-400 hover:text-yellow-300 mt-2">
@@ -1558,7 +1560,7 @@
                         document.getElementById('sortSelect')?.addEventListener('change', function() {
                              alert(`Sorting by ${this.value}... (This would re-fetch results from the backend)`);
                         });
-                    }, 2000);
+                    }, 1500);
                 }
             },
 
@@ -1614,6 +1616,202 @@
                      });
                      listEl.innerHTML = listHTML;
 
+                     document.querySelectorAll('.remove-store-btn').forEach(btn => {
+                         btn.addEventListener('click', function() {
+                             const storeId = this.getAttribute('data-storeid');
+                             if (confirm(`Are you sure you want to remove this store?`)) {
+                                 HAWKVIEW.state.configuredStores = HAWKVIEW.state.configuredStores.filter(s => s.id !== storeId);
+                                 HAWKVIEW.saveConfiguredStores();
+                                 alert('Store removed.');
+                             }
+                         });
+                     });
+                }
+            }
+        };
+
+        // --- START THE APP ---
+        window.addEventListener('load', () => {
+            HAWKVIEW.init();
+        });
+    </script>
+    <!-- --- CRITICAL FULLSCREEN ENHANCEMENT SCRIPT --- -->
+    <script>
+        (function() {
+            function applyStandaloneFixes() {
+                if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                    const installBtn = document.getElementById('installBtn');
+                    if (installBtn) {
+                       installBtn.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyStandaloneFixes);
+            } else {
+                applyStandaloneFixes();
+            }
+        })();
+    </script>
+</body>
+</html>
+            // --- NEW SEARCH MODULE ---
+            Search: {
+                perform: function() {
+                    const searchTerm = document.getElementById('productSearchInput').value.trim();
+                    if (!searchTerm) {
+                        alert('Please enter a product name or category to search for.');
+                        return;
+                    }
+
+                    console.log(`Performing search for: ${searchTerm}`);
+                    const initialPlaceholder = document.getElementById('initialPlaceholder');
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    const resultsContainer = document.getElementById('searchResultsContainer');
+                    const suggestedStoresSection = document.getElementById('suggestedStoresSection');
+
+                    initialPlaceholder.classList.add('hidden');
+                    resultsContainer.classList.add('hidden');
+                    suggestedStoresSection.classList.add('hidden');
+                    loadingIndicator.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        loadingIndicator.classList.add('hidden');
+                        resultsContainer.classList.remove('hidden');
+
+                        const mockResults = [];
+                        const configuredStores = HAWKVIEW.state.configuredStores;
+                        if (configuredStores.length === 0) {
+                             resultsContainer.innerHTML = `<p class="ui-font text-center text-red-400 py-10">No stores are configured. Please add stores in the Admin panel.</p>`;
+                             return;
+                        }
+
+                        configuredStores.forEach((store, index) => {
+                             if (Math.random() > 0.3) {
+                                 const priceOffset = (Math.random() * 50) - 25;
+                                 const originalPrice = 1000 + (index * 50);
+                                 const finalPrice = originalPrice + priceOffset;
+                                 const discount = finalPrice < originalPrice ? `-${(((originalPrice - finalPrice) / originalPrice) * 100).toFixed(1)}%` : "";
+                                 const hasCoupon = Math.random() > 0.5;
+                                 const couponCode = hasCoupon ? `COUPON${Math.floor(Math.random() * 900) + 100}` : "";
+                                 const mockImageUrl = `https://picsum.photos/seed/${searchTerm.replace(/\s+/g, '')}${index}/300/200`;
+
+                                 mockResults.push({
+                                     storeName: store.name,
+                                     storeIcon: "fas fa-store",
+                                     productImageUrl: mockImageUrl,
+                                     price: parseFloat(finalPrice.toFixed(2)),
+                                     originalPrice: parseFloat(originalPrice.toFixed(2)),
+                                     discount: discount,
+                                     coupon: couponCode,
+                                     url: store.affiliateTemplate.replace(/{[^}]+}/g, 'PRODUCT_ID_123'),
+                                     confidence: `${(90 + Math.random() * 9).toFixed(1)}%`,
+                                     savings: `$${(originalPrice - finalPrice).toFixed(2)}`,
+                                     trend: index % 3 === 0 ? "Down 5%" : (index % 3 === 1 ? "Stable" : "Up 2%")
+                                 });
+                             }
+                        });
+
+                        mockResults.sort((a, b) => a.price - b.price);
+
+                        if (mockResults.length === 0) {
+                             resultsContainer.innerHTML = `<p class="ui-font text-center py-10">Sorry, no deals found for "${searchTerm}".</p>`;
+                             return;
+                        }
+
+                        let resultsHTML = `
+                            <div class="results-header">
+                                <div class="results-stats ui-font">Found ${mockResults.length} deals for "${searchTerm}"</div>
+                            </div>
+                        `;
+                        resultsContainer.innerHTML = resultsHTML + mockResults.map(result => `
+                            <div class="result-card">
+                                <div class="product-image-placeholder"><img src="${result.productImageUrl}" alt="Product Image"></div>
+                                <div class="store-name ui-font"><i class="${result.storeIcon}"></i> ${result.storeName}</div>
+                                <div class="price-container">
+                                    <span class="final-price ui-font">$${result.price.toFixed(2)}</span>
+                                    ${result.originalPrice > result.price ? `<span class="original-price ui-font">$${result.originalPrice.toFixed(2)}</span>` : ''}
+                                    ${result.discount ? `<span class="discount-badge ui-font">${result.discount}</span>` : ''}
+                                </div>
+                                <div class="coupon-section">
+                                    <div>
+                                        ${result.coupon ? `<span class="coupon-code ui-font">${result.coupon}</span>` : `<span class="ui-font text-gray-500">No coupon available</span>`}
+                                    </div>
+                                    <div class="action-buttons">
+                                        <a href="${result.url}" target="_blank" class="buy-btn ui-font"><i class="fas fa-shopping-cart"></i> Buy Now</a>
+                                        ${result.coupon ? `<button class="copy-btn ui-font copy-coupon-btn" data-coupon="${result.coupon}">Copy Code</button>` : ''}
+                                    </div>
+                                </div>
+                                <div class="ai-insights">
+                                    <h4 class="ui-font"><i class="fas fa-chart-line"></i> AI Insights</h4>
+                                    <div class="insight-item"><span class="insight-label ui-font">AI Confidence:</span><span class="ui-font">${result.confidence}</span></div>
+                                    <div class="insight-item"><span class="insight-label ui-font">Your Savings:</span><span class="ui-font text-green-500 font-bold">${result.savings}</span></div>
+                                    <div class="insight-item"><span class="insight-label ui-font">Price Trend:</span><span class="ui-font">${result.trend}</span></div>
+                                </div>
+                            </div>
+                        `).join('');
+
+                        document.querySelectorAll('.copy-coupon-btn').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                navigator.clipboard.writeText(this.dataset.coupon).then(() => {
+                                    this.textContent = 'Copied!';
+                                    setTimeout(() => { this.textContent = 'Copy Code'; }, 2000);
+                                });
+                            });
+                        });
+                    }, 1500);
+                }
+            },
+
+            // --- PURCHASE HISTORY ---
+            PurchaseHistory: {
+                init: function() { },
+                show: function() {
+                    alert("Purchase History feature. This would show a list of past searches/purchases for the user.");
+                }
+            },
+
+            // --- ANALYTICS ---
+            Analytics: {
+                init: function() { },
+                show: function() {
+                    alert("Advanced Analytics feature. This would show personalized shopping insights and trends.");
+                }
+            },
+
+            // --- ADMIN PANEL ---
+            Admin: {
+                init: function() { },
+                showManageStores: function() {
+                    document.getElementById('manageStoresPanel').classList.toggle('hidden');
+                },
+                handleAddStoreForm: function() {
+                    const name = document.getElementById('newStoreName').value.trim();
+                    const url = document.getElementById('newStoreUrl').value.trim();
+                    const affiliate = document.getElementById('newAffiliateLink').value.trim();
+                    const storeData = { name, baseUrl: url, affiliateTemplate: affiliate };
+
+                    if (HAWKVIEW.addConfiguredStore(storeData)) {
+                        alert(`Store "${name}" added successfully from Admin panel!`);
+                        document.getElementById('newStoreName').value = '';
+                        document.getElementById('newStoreUrl').value = '';
+                        document.getElementById('newAffiliateLink').value = '';
+                    }
+                },
+                updateStoresListUI: function() {
+                     const listEl = document.getElementById('storesList');
+                     if (!listEl) return;
+                     const stores = HAWKVIEW.state.configuredStores;
+                     if (stores.length === 0) {
+                         listEl.innerHTML = '<p class="ui-font text-center text-gray-500">No stores configured yet.</p>';
+                         return;
+                     }
+                     listEl.innerHTML = stores.map(store => `
+                        <div class="bg-gray-800 p-2 rounded text-sm ui-font flex justify-between items-center">
+                             <span>${store.name} (<a href="${store.baseUrl}" target="_blank" class="text-yellow-400 hover:underline">${store.baseUrl}</a>)</span>
+                             <button class="text-xs text-red-400 hover:text-red-300 remove-store-btn" data-storeid="${store.id}">Remove</button>
+                         </div>
+                     `).join('');
                      document.querySelectorAll('.remove-store-btn').forEach(btn => {
                          btn.addEventListener('click', function() {
                              const storeId = this.getAttribute('data-storeid');
