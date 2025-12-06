@@ -5,22 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JADE – Black Lightning</title>
   <style>
-    body, html {
-      margin: 0; padding: 0; height: 100%; background: #000; overflow: hidden;
+    body, html { 
+      margin:0; padding:0; height:100%; background:#000; overflow:hidden; 
     }
-    video {
-      position: absolute;
-      top: 50%; left: 50%;
-      min-width: 100%; min-height: 100%;
-      width: auto; height: auto;
-      transform: translate(-50%, -50%);
+    video { 
+      position:fixed; 
+      top:50%; left:50%; 
+      min-width:100%; min-height:100%; 
+      width:auto; height:auto; 
+      transform:translate(-50%, -50%); 
+      object-fit:cover;
     }
   </style>
 </head>
 <body>
-  <video autoplay loop muted playsinline>
+  <video id="jadeVideo" playsinline autoplay muted loop>
     <source src="jade.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
+
+  <!-- Force autoplay on mobile + click-to-unmute fallback -->
+  <script>
+    const video = document.getElementById('jadeVideo');
+    video.play().catch(() => {
+      // If autoplay blocked, show a tiny "click to play" overlay
+      const overlay = document.createElement('div');
+      overlay.innerText = 'Click to watch JADE';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '50%'; overlay.style.left = '50%';
+      overlay.style.transform = 'translate(-50%, -50%)';
+      overlay.style.color = '#FFC107'; overlay.style.fontSize = '2rem';
+      overlay.style.cursor = 'pointer'; overlay.style.zIndex = '999';
+      document.body.appendChild(overlay);
+      overlay.onclick = () => { video.play(); overlay.remove(); video.muted = false; };
+    });
+  </script>
 </body>
 </html>
